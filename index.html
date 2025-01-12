@@ -88,10 +88,29 @@
             margin: 10px;
         }
 
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            animation: fadeOut 2s ease-out forwards;
+
+            z-index: -1;
+            filter: blur(10px); /* Smooth out the edges */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
     </style>
 </head>
 
-<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+<body style=" background-color: black; font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
     <div class="centerContainer">
         <div class="centerRow">
             <div id="rec_1" class="rectangle"><span>1</span></div>
@@ -180,6 +199,8 @@
 
 
 
+        //---- ---- ---- ---- POwO Functions : Audio
+
         async function POwO_loadFile(InFileName)
         {
             //convert a sound file to a audioBuffer, so that the audioContext can play it
@@ -216,6 +237,7 @@
                 {
                     POwO_playSound(i);
                     List_Recs[i].style.opacity = colorON
+                    POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 192,230 , 0,64);
                 }
             }
         }
@@ -230,6 +252,50 @@
                 }
             }
         }
+
+
+
+
+        // ---- ---- ---- ---- POwO Functions : visual
+
+        function POwO_RandomCircle
+        (
+            InRadiusMin, InRadiusMax,
+            InMarginR , InMarginU, InMarginL, InMarginD,
+            InColorRmin, InColorRmax, InColorGmin, InColorGmax, InColorBmin, InColorBmax
+        )
+        {
+            
+            // Create a new circle element
+            const circle = document.createElement('div');
+            circle.classList.add('circle');
+
+            // Set random size
+            const size = Math.random() * (InRadiusMax - InRadiusMin) + InRadiusMin; // Random size between 10px and 60px
+            circle.style.width = `${size}px`;
+            circle.style.height = `${size}px`;
+
+            // Set random position
+            const x = Math.random() * (window.innerWidth - InMarginR - InMarginL ) + InMarginL ;
+            const y = Math.random() * (window.innerHeight - InMarginD - InMarginU) + InMarginU ;
+            circle.style.left = `${x}px`;
+            circle.style.top = `${y}px`;
+
+            // Set random color
+            const r = Math.floor(Math.random() * (InColorRmax - InColorRmin) + InColorRmin);
+            const g = Math.floor(Math.random() * (InColorGmax - InColorGmin) + InColorGmin);
+            const b = Math.floor(Math.random() * (InColorBmax - InColorBmin) + InColorBmin);
+            circle.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+
+            // Append the circle to the body
+            document.body.appendChild(circle);
+
+            // Remove the circle after the fade-out animation ends
+            setTimeout(() => {
+                circle.remove();
+            }, 2000); // Match the duration of the fadeOut animation (2s)
+        }
+
 
 
 
