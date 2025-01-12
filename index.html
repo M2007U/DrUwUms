@@ -307,6 +307,11 @@
         document.addEventListener('keyup', (event) => {
             POwO_KeyUp(event.key);
         })
+        
+        for(var i = 0 ; i < List_Recs.length ; i++)
+        {
+            List_Recs[i].addEventListener("touchstart" , (event) => {POwO_KeyDown_PlaySound( List_Keys[i] )})
+        }
 
 
 
