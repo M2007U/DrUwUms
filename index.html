@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrUwUms</title>
+    <title>keybOwOard</title>
     <style>
     
         .centerContainer
@@ -66,6 +66,8 @@
 
             font-size: 16px;
             font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+            z-index: 1024;
         }
 
         .bar
@@ -88,238 +90,824 @@
             margin: 10px;
         }
 
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.8);
-            animation: fadeOut 2s ease-out forwards;
-
-            z-index: -1;
-            filter: blur(10px); /* Smooth out the edges */
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 0.5;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
-
     </style>
 </head>
-
 <body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+
     <div class="centerContainer">
-        <div class="centerRow">
-            <div id="rec_1" class="rectangle"><span>1</span></div>
-            <div id="rec_2" class="rectangle"><span>2</span></div>
-            <div id="rec_3" class="rectangle"><span>3</span></div>
-            <div id="rec_4" class="rectangle"><span>4</span></div>
+        <div class="centerRow" style="display:flex;color:#606060;font-size:12px;width:1920px;">
+            <span style="text-align: center;">
+                OSC = &nbsp&nbsp&nbsp
+                [oct : <text id="field_octave">5</text>]&nbsp&nbsp&nbsp
+                [semitone : <text id="field_semitone">0</text>]&nbsp&nbsp&nbsp
+                [type : <text id="field_type">square</text>]<br>
+
+                ADSR = &nbsp&nbsp&nbsp
+                [atk : <text id="field_adsr_atk">1</text>]&nbsp&nbsp&nbsp
+                [sus : <text id="field_adsr_sus">1</text>]&nbsp&nbsp&nbsp
+                [rel : <text id="field_adsr_rel">1</text>]&nbsp&nbsp&nbsp
+                [vol : <text id="field_adsr_vol">0.125</text>]<br>
+                
+                FILTER = &nbsp&nbsp&nbsp
+                [lowpass > freq : <text id="field_filter_lowpass_freq">20000</text>]&nbsp&nbsp&nbsp
+                [lowpass > reso : <text id="field_filter_lowpass_reso">1</text>]&nbsp&nbsp&nbsp
+                [hghpass > freq : <text id="field_filter_hghpass_freq">0</text>]&nbsp&nbsp&nbsp
+                [hghpass > reso : <text id="field_filter_hghpass_reso">1</text>]&nbsp&nbsp&nbsp
+                [lowshlf > freq : <text id="field_filter_lowshlf_freq">0</text>]&nbsp&nbsp&nbsp
+                [lowshlf > gain : <text id="field_filter_lowshlf_gain">0</text>]&nbsp&nbsp&nbsp
+                [hghshlf > freq : <text id="field_filter_hghshlf_freq">20000</text>]&nbsp&nbsp&nbsp
+                [hghshlf > gain : <text id="field_filter_hghshlf_gain">0</text>]<br>
+                <br>
+                <text style="color:#403000;">[Currently Adjusting : <text  id="CONTROL_print">ASDR > overall</text>]</text>
+
+                <br>
+            </span>
         </div>
+        <div style="height:25px"></div>
+        <div class="centerRow" style="align-items: baseline;">
+            <div class="blank" style="width:50px;height:210px;"></div>
+
+            <div id="bar_a" class="bar"></div>
+            <div id="bar_w" class="bar"></div>
+            <div id="bar_s" class="bar"></div>
+            <div id="bar_e" class="bar"></div>
+            <div id="bar_d" class="bar"></div>
+
+            <div id="bar_f" class="bar"></div>
+            <div id="bar_t" class="bar"></div>
+            <div id="bar_g" class="bar"></div>
+            <div id="bar_y" class="bar"></div>
+            <div id="bar_h" class="bar"></div>
+            <div id="bar_u" class="bar"></div>
+            <div id="bar_j" class="bar"></div>
+
+            <div id="bar_k" class="bar"></div>
+            <div id="bar_o" class="bar"></div>
+            <div id="bar_l" class="bar"></div>
+            <div id="bar_p" class="bar"></div>
+            <div id="bar_sc" class="bar"></div>
+            <div id="bar_qm" class="bar"></div>
+
+            <div class="blank" style="width:50px;height:210px;"></div>
+        </div>
+        <div style="height:25px"></div>
         <div class="centerRow">
-            <div id="rec_q" class="rectangle"><span>q</span></div>
+            <div id="btn_wave_sin" class="button">◯</div>
+            <div id="btn_wave_tri" class="button">△</div>
+            <div id="btn_wave_saw" class="button">◺</div>
+            <div id="btn_wave_sqr" class="button">▢</div>
+            <div style="width: 500px;"></div>
+            <div id="btn_keyTextToggle" class="button">👁️</div>
+            <div id="btn_adktSetup" class="button">=</div>
+        </div>
+        <div style="height:0px"></div>
+        <div class="centerRow">
             <div id="rec_w" class="rectangle"><span>w</span></div>
             <div id="rec_e" class="rectangle"><span>e</span></div>
-            <div id="rec_r" class="rectangle"><span>r</span></div>
+
+            <div class="blank"></div>
+
+            <div id="rec_t" class="rectangle"><span>t</span></div>
+            <div id="rec_y" class="rectangle"><span>y</span></div>
+            <div id="rec_u" class="rectangle"><span>u</span></div>
+
+            <div class="blank"></div>
+
+            <div id="rec_o" class="rectangle"><span>o</span></div>
+            <div id="rec_p" class="rectangle"><span>p</span></div>
+
+            <div class="blank"></div>
+            
         </div>
         <div class="centerRow">
             <div id="rec_a" class="rectangle"><span>a</span></div>
             <div id="rec_s" class="rectangle"><span>s</span></div>
             <div id="rec_d" class="rectangle"><span>d</span></div>
+
             <div id="rec_f" class="rectangle"><span>f</span></div>
+            <div id="rec_g" class="rectangle"><span>g</span></div>
+            <div id="rec_h" class="rectangle"><span>h</span></div>
+            <div id="rec_j" class="rectangle"><span>j</span></div>
+
+            <div id="rec_k" class="rectangle"><span>k</span></div>
+            <div id="rec_l" class="rectangle"><span>l</span></div>
+            <div id="rec_sc" class="rectangle"><span>;</span></div>
+            <div id="rec_qm" class="rectangle"><span>'</span></div>
         </div>
         <div class="centerRow">
-            <div id="rec_z" class="rectangle"><span>z</span></div>
-            <div id="rec_x" class="rectangle"><span>x</span></div>
-            <div id="rec_c" class="rectangle"><span>c</span></div>
-            <div id="rec_v" class="rectangle"><span>v</span></div>
+            <div id="btn_oct_d" class="button">oct ↓</div>
+            <div id="btn_oct_u" class="button">oct ↑</div>
+            <div id="btn_smi_d" class="button">semi ↓</div>
+            <div id="btn_smi_u" class="button">semi ↑</div>
+            <div style="width: 400px;"></div>
+            <div id="btn_mod_l" class="button">mod ←</div>
+            <div id="btn_prm_l" class="button">prm ←</div>
+            <div id="btn_prm_d" class="button">prm ↓</div>
+            <div id="btn_prm_u" class="button">prm ↑</div>
+            <div id="btn_prm_r" class="button">prm →</div>
+            <div id="btn_mod_r" class="button">mod →</div>
         </div>
+        <div class="centerRow" style="display:flex;color:#606060;font-size:12px;width:1920px;">
+            <span style="text-align: center;">
+                <br>
+                [1 : ◯]&nbsp&nbsp&nbsp[2 : △]&nbsp&nbsp&nbsp[3 : ◺]&nbsp&nbsp&nbsp[4 : ▢]&nbsp&nbsp&nbsp[0 : Toggle KeyText]&nbsp&nbsp&nbsp<text id="field_adktSetup" style="color:#600000;">[= : start / power / setup (MANDATORY)]</text><br>
+                [z : oct ↓] &nbsp&nbsp&nbsp [x : oct ↑] &nbsp&nbsp&nbsp [c : semi ↓] &nbsp&nbsp&nbsp [v : semi ↑]  &nbsp&nbsp&nbsp 
+                [b : module ←] &nbsp&nbsp&nbsp [n : param ←] &nbsp&nbsp&nbsp [m : param ↓] &nbsp&nbsp&nbsp [, : param ↑] &nbsp&nbsp&nbsp [. : param →] &nbsp&nbsp&nbsp [/ : module →]<br>
+                
+            </span>
+        </div>
+        
+        
     </div>
+
     <script>
 
-        // ---- ---- ---- ---- grab objects from structure
+        let isREADY = false;
 
-        const rec_1 = document.getElementById("rec_1");
-        const rec_2 = document.getElementById("rec_2");
-        const rec_3 = document.getElementById("rec_3");
-        const rec_4 = document.getElementById("rec_4");
+        let chaAll = ["a","w","s","e","d","f","t","g","y","h","u","j","k","o","l","p",";","'"]
 
-        const rec_q = document.getElementById("rec_q");
-        const rec_w = document.getElementById("rec_w");
-        const rec_e = document.getElementById("rec_e");
-        const rec_r = document.getElementById("rec_r");
-
+        // Select the rectangle element
         const rec_a = document.getElementById("rec_a");
+        const rec_w = document.getElementById("rec_w");
         const rec_s = document.getElementById("rec_s");
+        const rec_e = document.getElementById("rec_e");
         const rec_d = document.getElementById("rec_d");
+
         const rec_f = document.getElementById("rec_f");
+        const rec_t = document.getElementById("rec_t");
+        const rec_g = document.getElementById("rec_g");
+        const rec_y = document.getElementById("rec_y");
+        const rec_h = document.getElementById("rec_h");
+        const rec_u = document.getElementById("rec_u");
+        const rec_j = document.getElementById("rec_j");
 
-        const rec_z = document.getElementById("rec_z");
-        const rec_x = document.getElementById("rec_x");
-        const rec_c = document.getElementById("rec_c");
-        const rec_v = document.getElementById("rec_v");
+        const rec_k = document.getElementById("rec_k");
+        const rec_o = document.getElementById("rec_o");
+        const rec_l = document.getElementById("rec_l");
+        const rec_p = document.getElementById("rec_p");
+        const rec_sc = document.getElementById("rec_sc");
+        const rec_qm = document.getElementById("rec_qm");
+
+        const btn_wave_sin = document.getElementById("btn_wave_sin");
+        const btn_wave_tri = document.getElementById("btn_wave_tri");
+        const btn_wave_saw = document.getElementById("btn_wave_saw");
+        const btn_wave_sqr = document.getElementById("btn_wave_sqr");
+        const btn_keyTextToggle = document.getElementById("btn_keyTextToggle");
+        const btn_adktSetup = document.getElementById("btn_adktSetup");
+
+        const bar_a = document.getElementById("bar_a");
+        const bar_w = document.getElementById("bar_w");
+        const bar_s = document.getElementById("bar_s");
+        const bar_e = document.getElementById("bar_e");
+        const bar_d = document.getElementById("bar_d");
+
+        const bar_f = document.getElementById("bar_f");
+        const bar_t = document.getElementById("bar_t");
+        const bar_g = document.getElementById("bar_g");
+        const bar_y = document.getElementById("bar_y");
+        const bar_h = document.getElementById("bar_h");
+        const bar_u = document.getElementById("bar_u");
+        const bar_j = document.getElementById("bar_j");
+
+        const bar_k = document.getElementById("bar_k");
+        const bar_o = document.getElementById("bar_o");
+        const bar_l = document.getElementById("bar_l");
+        const bar_p = document.getElementById("bar_p");
+        const bar_sc = document.getElementById("bar_sc");
+        const bar_qm = document.getElementById("bar_qm");
+
+        const btn_oct_d = document.getElementById("btn_oct_d");
+        const btn_oct_u = document.getElementById("btn_oct_u");
+        const btn_smi_d = document.getElementById("btn_smi_d");
+        const btn_smi_u = document.getElementById("btn_smi_u");
+        const btn_mod_l = document.getElementById("btn_mod_l");
+        const btn_prm_l = document.getElementById("btn_prm_l");
+        const btn_prm_d = document.getElementById("btn_prm_d");
+        const btn_prm_u = document.getElementById("btn_prm_u");
+        const btn_prm_r = document.getElementById("btn_prm_r");
+        const btn_mod_r = document.getElementById("btn_mod_r");
+
+        const field_adktSetup = document.getElementById("field_adktSetup");
+
+        const field_octave = document.getElementById("field_octave");
+        const field_semitone = document.getElementById("field_semitone");
+
+        const field_type = document.getElementById("field_type");
+
+        const field_adsr_atk = document.getElementById("field_adsr_atk");
+        const field_adsr_sus = document.getElementById("field_adsr_sus");
+        const field_adsr_rel = document.getElementById("field_adsr_rel");
+        const field_adsr_vol = document.getElementById("field_adsr_vol");
+
+        const field_filter_lowpass_freq = document.getElementById("field_filter_lowpass_freq");
+        const field_filter_lowpass_reso = document.getElementById("field_filter_lowpass_reso");
+        const field_filter_hghpass_freq = document.getElementById("field_filter_hghpass_freq");
+        const field_filter_hghpass_reso = document.getElementById("field_filter_hghpass_reso");
+        const field_filter_lowshlf_freq = document.getElementById("field_filter_lowshlf_freq");
+        const field_filter_lowshlf_gain = document.getElementById("field_filter_lowshlf_gain");
+        const field_filter_hghshlf_freq = document.getElementById("field_filter_hghshlf_freq");
+        const field_filter_hghshlf_gain = document.getElementById("field_filter_hghshlf_gain");
+
+        const field_control_currentChoice = document.getElementById("CONTROL_print");
 
 
-        // ---- ---- ---- ---- prepare global objects
+
+
+
+        
+
+        let recAll = [ rec_a,rec_w,rec_s,rec_e,rec_d , rec_f,rec_t,rec_g,rec_y,rec_h,rec_u,rec_j , rec_k,rec_o,rec_l,rec_p,rec_sc , rec_qm];
+        let barAll = [ bar_a,bar_w,bar_s,bar_e,bar_d , bar_f,bar_t,bar_g,bar_y,bar_h,bar_u,bar_j , bar_k,bar_o,bar_l,bar_p,bar_sc , bar_qm];
 
         let colorON = "1"
         let colorOFF = "0.5"
 
+
+
+
+
+        // ---- ---- ---- ---- generate the brain aka audio context
+
         const adkt = new (window.AudioContext || window.webkitAudioContext)();
         console.log("new audioKontext");
 
-        const List_URL =
+
+
+
+
+        // ---- ---- ---- ---- generate oscillators
+
+        const osc_a = adkt.createOscillator();
+        const osc_w = adkt.createOscillator();
+        const osc_s = adkt.createOscillator();
+        const osc_e = adkt.createOscillator();
+        const osc_d = adkt.createOscillator();
+
+        const osc_f = adkt.createOscillator();
+        const osc_t = adkt.createOscillator();
+        const osc_g = adkt.createOscillator();
+        const osc_y = adkt.createOscillator();
+        const osc_h = adkt.createOscillator();
+        const osc_u = adkt.createOscillator();
+        const osc_j = adkt.createOscillator();
+
+        const osc_k = adkt.createOscillator();
+        const osc_o = adkt.createOscillator();
+        const osc_l = adkt.createOscillator();
+        const osc_p = adkt.createOscillator();
+        const osc_sc = adkt.createOscillator();
+        const osc_qm = adkt.createOscillator();
+
+        
+
+        //start at C5
+        let freq_All = 
         [
-            'cowbell.ogg',  'glass.ogg',    'tamb.ogg',     'triangle.ogg',
-            'hhat.wav',     'wood1.ogg',    'wood2.ogg',    'hhat.wav',
-            'clap.wav',     'snare.wav',    'snare.wav',    'clap.wav',
-            'stone.ogg',    'kick.wav',     'kick.wav',     'stone.ogg'
-        ];
+            523.2511, 554.3653, 587.3295, 622.254, 659.2551,
+            698.4565, 739.9888, 783.9909, 830.6094, 880, 932.3275, 987.7666,
+            523.2511 * 2, 554.3653 * 2, 587.3295 * 2, 622.254 * 2, 659.2551 * 2, 698.4565 * 2
+        ]
 
-        const List_AudioBuffers = [];
+        let freq_oct = 5;
+        let freq_sem = 0;
 
-        const List_Keys =
+        let osc_All =    [ osc_a, osc_w, osc_s, osc_e, osc_d  , osc_f, osc_t, osc_g, osc_y, osc_h, osc_u, osc_j  , osc_k, osc_o, osc_l, osc_p, osc_sc  , osc_qm];
+
+
+
+
+
+
+        // ---- ---- ---- ---- ADSR gain Nodes
+
+        const ADSR_a = adkt.createGain();
+        const ADSR_w = adkt.createGain();
+        const ADSR_s = adkt.createGain();
+        const ADSR_e = adkt.createGain();
+        const ADSR_d = adkt.createGain();
+
+        const ADSR_f = adkt.createGain();
+        const ADSR_t = adkt.createGain();
+        const ADSR_g = adkt.createGain();
+        const ADSR_y = adkt.createGain();
+        const ADSR_h = adkt.createGain();
+        const ADSR_u = adkt.createGain();
+        const ADSR_j = adkt.createGain();
+
+        const ADSR_k = adkt.createGain();
+        const ADSR_o = adkt.createGain();
+        const ADSR_l = adkt.createGain();
+        const ADSR_p = adkt.createGain();
+        const ADSR_sc = adkt.createGain();
+        const ADSR_qm = adkt.createGain();
+
+        let ADSR_sustain = 1;
+        let ADSR_attack = 1;
+        let ADSR_release = 1;
+        let ADSR_delta = 1/256;
+
+        let ADSR_All =    [ ADSR_a, ADSR_w, ADSR_s, ADSR_e, ADSR_d  , ADSR_f, ADSR_t, ADSR_g, ADSR_y, ADSR_h, ADSR_u, ADSR_j  , ADSR_k, ADSR_o, ADSR_l, ADSR_p, ADSR_sc  , ADSR_qm];
+
+        const osc_core = adkt.createGain();
+        let osc_type = "square";
+
+
+        // ---- ---- ---- ---- filter
+
+        //frequency range is 0 to 20000
+        //q value range is 0.0001 to 1000
+        //gain range = -8 to 8
+
+        let filter_delta_freq = 10;
+        let filter_delta_qval = 1;
+        let filter_delta_decb = 1/16;
+
+
+        const filter_core_in = adkt.createGain();
+        const filter_pass_low = adkt.createBiquadFilter(); 
+        const filter_pass_hgh = adkt.createBiquadFilter(); 
+        const filter_shlf_low = adkt.createBiquadFilter(); 
+        const filter_shlf_hgh = adkt.createBiquadFilter(); 
+        const filter_core_out = adkt.createGain();
+
+        
+        
+        
+        
+
+        // ---- ---- ---- ---- Volume node
+
+        const Vol_All = adkt.createGain();
+        let Vol_delta = 1/256;
+        Vol_All.gain.setValueAtTime(0.125,adkt.currentTime);
+
+
+
+
+    
+
+
+        // ---- ---- ---- ---- parameter control
+
+        let CONTROL_param = 
         [
-            "1","2","3","4",
-            "q","w","e","r",
-            "a","s","d","f",
-            "z","x","c","v"
-        ];
+            [
+                "ADSR > attack",
+                "ADSR > sustain",
+                "ADSR > release",
+                "ADSR > overall"
+            ],
+            [
+                "FILTER > lowpass > frequency",
+                "FILTER > lowpass > resonance",
+                "FILTER > highpass > frequency",
+                "FILTER > highpass > resonance",
+                "FILTER > lowshelf > frequency",
+                "FILTER > lowshelf > gain",
+                "FILTER > highshelf > frequency",
+                "FILTER > highshelf > gain"
+            ]
+        ]
 
-        const List_Recs =
-        [
-            rec_1, rec_2, rec_3, rec_4,
-            rec_q, rec_w, rec_e, rec_r,
-            rec_a, rec_s, rec_d, rec_f,
-            rec_z, rec_x, rec_c, rec_v
-        ];
-
-
-
-
-        //---- ---- ---- ---- POwO Functions : Audio
-
-        async function POwO_loadFile(InFileName)
-        {
-            //convert a sound file to a audioBuffer, so that the audioContext can play it
-            const response = await fetch(InFileName);
-            const arrayBuffer = await response.arrayBuffer();
-            return await adkt.decodeAudioData(arrayBuffer);
-        }
-
-        async function POwO_loadSounds()
-        {
-            //turn every sound file into an audio Buffer and have them in a list
-            for(var i = 0 ; i < List_URL.length ; i++)
-            {
-                const getSmallAudioBuffer = await POwO_loadFile(List_URL[i]);
-                List_AudioBuffers.push( getSmallAudioBuffer );
-            }
-        }
-
-        POwO_loadSounds()
-
-        function POwO_playSound(InSoundIndex)
-        {
-            const bufferNode = adkt.createBufferSource();
-            bufferNode.buffer = List_AudioBuffers[InSoundIndex];
-            bufferNode.connect(adkt.destination);
-            bufferNode.start();
-        }
-
-        function POwO_KeyDown_PlaySound(InComingKey)
-        {
-            for(var i = 0 ; i < List_Keys.length ; i++)
-            {
-                if (InComingKey === List_Keys[i])
-                {
-                    POwO_playSound(i);
-                    List_Recs[i].style.opacity = colorON
-                    POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 192,230 , 0,64);
-                }
-            }
-        }
-
-        function POwO_KeyUp(InComingKey)
-        {
-            for(var i = 0 ; i < List_Keys.length ; i++)
-            {
-                if (InComingKey === List_Keys[i])
-                {
-                    List_Recs[i].style.opacity = colorOFF
-                }
-            }
-        }
+        let CONTROL_index_0 = 0;
+        let CONTROL_index_1 = 3;
 
 
+        // ---- ---- ---- ---- now the controls and logics
 
-
-        // ---- ---- ---- ---- POwO Functions : visual
-
-        function POwO_RandomCircle
-        (
-            InRadiusMin, InRadiusMax,
-            InMarginR , InMarginU, InMarginL, InMarginD,
-            InColorRmin, InColorRmax, InColorGmin, InColorGmax, InColorBmin, InColorBmax
-        )
+        function POwO_Math_Clamp(InMin, InVal, InMax)
         {
             
-            // Create a new circle element
-            const circle = document.createElement('div');
-            circle.classList.add('circle');
+            //return Math.max(InMin, Math.min(InVal, InMax) );
+            if (InVal > InMax)
+            {
+                return InMax;
+            }
+            else if (InVal < InMin)
+            {
+                return InMin;
+            }
+            else
+            {
+                return InVal;
+            }
 
-            // Set random size
-            const size = Math.random() * (InRadiusMax - InRadiusMin) + InRadiusMin; // Random size between 10px and 60px
-            circle.style.width = `${size}px`;
-            circle.style.height = `${size}px`;
+        }
 
-            // Set random position
-            const x = Math.random() * (window.innerWidth - InMarginR - InMarginL ) + InMarginL ;
-            const y = Math.random() * (window.innerHeight - InMarginD - InMarginU) + InMarginU ;
-            circle.style.left = `${x}px`;
-            circle.style.top = `${y}px`;
+        function POwO_ifKeyDownSetFlex(event, InString, InObject)
+        {
+            if (event.key === InString)
+            {
+                InObject.style.opacity = "1";
+            }
+        }
 
-            // Set random color
-            const r = Math.floor(Math.random() * (InColorRmax - InColorRmin) + InColorRmin);
-            const g = Math.floor(Math.random() * (InColorGmax - InColorGmin) + InColorGmin);
-            const b = Math.floor(Math.random() * (InColorBmax - InColorBmin) + InColorBmin);
-            circle.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+        function POwO_ifKeyDownSetNone(event, InString, InObject)
+        {
+            if (event.key === InString)
+            {
+                InObject.style.opacity = "0.5";
+            }
+        }
 
-            // Append the circle to the body
-            document.body.appendChild(circle);
+        function POwO_OscilatorSetType(InString)
+        {
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                osc_All[i].type = InString;
+            }
+        }
 
-            // Remove the circle after the fade-out animation ends
-            setTimeout(() => {
-                circle.remove();
-            }, 2000); // Match the duration of the fadeOut animation (2s)
+        function POwO_OscilatorFreq_Zero()
+        {
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                osc_All[i].frequency.setValueAtTime(0,adkt.currentTime);
+            }
+
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                console.log("osc_All[" + i.toString() + "] : " + osc_All[i].frequency.value.toString());
+            }
+        }
+
+        function POwO_OscilatorFreq()
+        {
+            for(let i = 0 ; i < freq_All.length ; i++)
+            {
+                osc_All[i].frequency.setValueAtTime(freq_All[i],adkt.currentTime);
+            }
+        }
+
+        
+
+        function POwO_adktSetup()
+        {
+            adkt.resume();
+
+            // default values for oscilators
+            POwO_OscilatorSetType("square")
+            for(var i  = 0; i < ADSR_All.length ; i++)
+            {
+                ADSR_All[i].gain.setValueAtTime(0,adkt.currentTime);
+            }
+            POwO_OscilatorFreq();
+
+            // default value for FILTER module
+            filter_pass_low.type = 'lowpass';  filter_pass_low.frequency.setValueAtTime(20000   ,adkt.currentTime);    filter_pass_low.Q.setValueAtTime(1,adkt.currentTime);
+            filter_pass_hgh.type = 'highpass'; filter_pass_hgh.frequency.setValueAtTime(0       ,adkt.currentTime);    filter_pass_hgh.Q.setValueAtTime(1,adkt.currentTime);
+            filter_shlf_low.type = 'lowshelf'; filter_shlf_low.frequency.setValueAtTime(20000   ,adkt.currentTime);    filter_shlf_low.gain.setValueAtTime(0,adkt.currentTime);
+            filter_shlf_hgh.type = 'highshelf';filter_shlf_hgh.frequency.setValueAtTime(0       ,adkt.currentTime);    filter_shlf_hgh.gain.setValueAtTime(0,adkt.currentTime);
+
+
+
+            // Connect all nodes
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                osc_All[i].connect(ADSR_All[i]);
+                ADSR_All[i].connect(osc_core);
+            }
+            osc_core.connect(filter_core_in);
+            filter_core_in.connect(filter_pass_low);
+            filter_pass_low.connect(filter_pass_hgh);
+            filter_pass_hgh.connect(filter_shlf_low);
+            filter_shlf_low.connect(filter_shlf_hgh);
+            filter_shlf_hgh.connect(filter_core_out);
+            filter_core_out.connect(Vol_All);
+            Vol_All.connect(adkt.destination);
+
+            // start all the oscilators
+            for(let i = 0 ; i < osc_All.length ; i++)
+            {
+                osc_All[i].start();
+            }
+
+            // connect successfuly, ready
+            console.log("=")
+            field_adktSetup.style.color = "#006000"
+            isREADY = true;
+        }
+
+        function POwO_Tone_Up()
+        {
+            for(var i = 0 ; i < 12 ; i++)
+            {
+                freq_All[i] = freq_All[i+1];
+            }
+
+            for(var i = 12 ; i < freq_All.length ; i++)
+            {
+                freq_All[i] = freq_All[i-12] * 2;
+            }
+
+        }
+
+        function POwO_Tone_Down()
+        {
+            for(var i = 12 ; 0 < i ; i--) //for 1 to 12
+            {
+                freq_All[i] = freq_All[i-1];
+            }
+
+            freq_All[0] = freq_All[12] / 2;
+
+            for(var i = 13 ; i < freq_All.length ; i++)
+            {
+                freq_All[i] = freq_All[i-12] * 2;
+            }
+
+        }
+
+        function POwO_Tone_Fly()
+        {
+            for(var i = 0 ; i < freq_All.length ; i++)
+            {
+                freq_All[i] = freq_All[i] * 2;
+            }
+        }
+
+        function POwO_Tone_Drop()
+        {
+            for(var i = 0 ; i < freq_All.length ; i++)
+            {
+                freq_All[i] = freq_All[i] / 2;
+            }
+        }
+
+        function POwO_Param_Change(InDirection)
+        {
+            let Direction = 1;
+            if (InDirection === "+")
+            {
+                Direction = 1;
+            }
+            else if (InDirection === "-")
+            {
+                Direction = -1;
+            }
+
+            switch (CONTROL_index_0)
+            {
+                case 0: //ADSR
+                    switch (CONTROL_index_1)
+                    {
+                        case 0 : ADSR_attack = POwO_Math_Clamp(1/256 , ADSR_attack + ADSR_delta * Direction , 1);                                       field_adsr_atk.textContent = ADSR_attack.toString();         break;
+                        case 1 : ADSR_sustain = POwO_Math_Clamp(0, ADSR_sustain + ADSR_delta * Direction , 1);                                          field_adsr_sus.textContent = ADSR_sustain.toString();        break;
+                        case 2 : ADSR_release = POwO_Math_Clamp(1/256 , ADSR_release + ADSR_delta * Direction , 1);                                     field_adsr_rel.textContent = ADSR_release.toString();        break;
+                        case 3 : Vol_All.gain.setValueAtTime(POwO_Math_Clamp(0,Vol_All.gain.value + Vol_delta * Direction,1), adkt.currentTime);    field_adsr_vol.textContent = Vol_All.gain.value.toString();  break;
+                        default:break;
+                    }
+                break;
+                case 1: //FILTER
+                    switch (CONTROL_index_1)
+                    {
+                        case 0 : filter_pass_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_low.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_lowpass_freq.textContent = filter_pass_low.frequency.value.toString(); break;
+                        case 2 : filter_pass_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_pass_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_hghpass_freq.textContent = filter_pass_hgh.frequency.value.toString(); break;
+                        case 4 : filter_shlf_low.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_low.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_lowshlf_freq.textContent = filter_shlf_low.frequency.value.toString(); break;
+                        case 6 : filter_shlf_hgh.frequency.setValueAtTime( POwO_Math_Clamp(0,filter_shlf_hgh.frequency.value + filter_delta_freq * Direction,20000), adkt.currentTime); field_filter_hghshlf_freq.textContent = filter_shlf_hgh.frequency.value.toString(); break;
+
+                        case 1 : filter_pass_low.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_low.Q.value + filter_delta_qval * Direction,1000), adkt.currentTime); field_filter_lowpass_reso.textContent = filter_pass_low.Q.value.toString(); break;
+                        case 3 : filter_pass_hgh.Q.setValueAtTime( POwO_Math_Clamp(1,filter_pass_hgh.Q.value + filter_delta_qval * Direction,1000), adkt.currentTime); field_filter_hghpass_reso.textContent = filter_pass_hgh.Q.value.toString(); break;
+                        case 5 : filter_shlf_low.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_low.gain.value + filter_delta_decb * Direction,8), adkt.currentTime); field_filter_lowshlf_gain.textContent = filter_shlf_low.gain.value.toString(); break;
+                        case 7 : filter_shlf_hgh.gain.setTargetAtTime( POwO_Math_Clamp(-8,filter_shlf_hgh.gain.value + filter_delta_decb * Direction,8), adkt.currentTime); field_filter_hghshlf_gain.textContent = filter_shlf_hgh.gain.value.toString(); break;
+                    
+                        default:
+                            break;
+                    }
+                break;
+                default:
+                break;
+            }
+        }
+
+        function POwO_Param_CurrentChoicePrint()
+        {
+            console.log(CONTROL_index_0);
+            console.log(CONTROL_index_1);
+            field_control_currentChoice.textContent = CONTROL_param[CONTROL_index_0][CONTROL_index_1];
         }
 
 
 
 
+        // ---- ---- ---- ---- ACTIONS
 
-        document.addEventListener('keydown', (event) => {
-            POwO_KeyDown_PlaySound(event.key);
+        function POwO_Action_SemiDown()
+        {
+            POwO_Tone_Down();
+            POwO_OscilatorFreq()
+            freq_sem--;
+            field_semitone.textContent = freq_sem.toString();
+        }
+
+        function POwO_Action_SemiUp()
+        {
+            POwO_Tone_Up();
+            POwO_OscilatorFreq()
+            freq_sem++;
+            field_semitone.textContent = freq_sem.toString();
+        }
+
+        function POwO_Action_OctaveDown()
+        {
+            POwO_Tone_Drop();
+            POwO_OscilatorFreq()
+            freq_oct--;
+            field_octave.textContent = freq_oct.toString();
+        }
+
+        function POwO_Action_OctaveUp()
+        {
+            POwO_Tone_Fly();
+            POwO_OscilatorFreq()
+            freq_oct++;
+            field_octave.textContent = freq_oct.toString();
+        }
+
+        function POwO_Action_ModL()
+        {
+            CONTROL_index_0 = (CONTROL_index_0 + (CONTROL_param.length - 1) ) % CONTROL_param.length;
+            CONTROL_index_1 = 0;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_ModR()
+        {
+            CONTROL_index_0 = (CONTROL_index_0 + 1) % CONTROL_param.length;
+            CONTROL_index_1 = 0;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_PrmL()
+        {
+            CONTROL_index_1 = (CONTROL_index_1 + (CONTROL_param[CONTROL_index_0].length - 1)) % CONTROL_param[CONTROL_index_0].length;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_PrmR()
+        {
+            CONTROL_index_1 = (CONTROL_index_1 + 1) % CONTROL_param[CONTROL_index_0].length;
+            POwO_Param_CurrentChoicePrint();
+        }
+
+        function POwO_Action_TypeSin()
+        {
+            POwO_OscilatorSetType("sine");
+            field_type.textContent = "sine";
+        }
+
+        function POwO_Action_TypeTri()
+        {
+            POwO_OscilatorSetType("triangle");
+            field_type.textContent = "triangle";
+        }
+
+        function POwO_Action_TypeSaw()
+        {
+            POwO_OscilatorSetType("sawtooth");
+            field_type.textContent = "sawtooth";
+        }
+
+        function POwO_Action_TypeSqr()
+        {
+            POwO_OscilatorSetType("square");
+            field_type.textContent = "square";
+        }
+
+        function POwO_Action_KeyTextToggle()
+        {
+            if (rec_a.textContent === "a")
+            {
+                for(var i = 0 ; i < recAll.length ; i++)
+                {
+                    recAll[i].textContent = "";
+                }
+            }
+            else
+            {
+                for(var i = 0 ; i < recAll.length ; i++)
+                {
+                    recAll[i].textContent = chaAll[i]
+                }
+            }
+        }
+
+
+        
+        
+        // ---- ---- ---- ---- KEYBOARD CONTROLS : Listen for the 'keydown' event
+        
+        document.addEventListener("keydown", (event) =>
+        {
+            for(let i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetFlex(event, chaAll[i], recAll[i]);
+            }
+
+            if (event.key === "="){POwO_adktSetup()}
+            else if (event.key === "c"){POwO_Action_SemiDown()}
+            else if (event.key === "v"){POwO_Action_SemiUp()}
+            else if (event.key === "z"){POwO_Action_OctaveDown()}
+            else if (event.key === "x"){POwO_Action_OctaveUp()}
+            else if (event.key === "b"){POwO_Action_ModL()}
+            else if (event.key === "n"){POwO_Action_PrmL()}
+            else if (event.key === "m"){POwO_Param_Change("-")}
+            else if (event.key === ","){POwO_Param_Change("+")}
+            else if (event.key === "."){POwO_Action_PrmR()}
+            else if (event.key === "/"){POwO_Action_ModR() }
+            else if (event.key === "9"){}
+            else if (event.key === "0"){POwO_Action_KeyTextToggle()}
+            else if (event.key === "1"){POwO_Action_TypeSin()}
+            else if (event.key === "2"){POwO_Action_TypeTri()}
+            else if (event.key === "3"){POwO_Action_TypeSaw()}
+            else if (event.key === "4"){POwO_Action_TypeSqr()}
         });
 
-        document.addEventListener('keyup', (event) => {
-            POwO_KeyUp(event.key);
-        })
-        
-        for(var k = 0 ; k < List_Recs.length ; k++)
+        document.addEventListener("keyup", (event) =>
         {
-            const currentEventKey = List_Keys[k]
-            List_Recs[k].addEventListener("touchstart" , (event) => {POwO_KeyDown_PlaySound( currentEventKey )})
-            List_Recs[k].addEventListener("touchend" , (event) => {POwO_KeyUp( currentEventKey )})
+            for(var i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
+            }
+        });
+
+
+
+
+        // ---- ---- ---- ---- SCREEN CONTROLS
+
+        function POwO_addEventListen_touchstartUp_PianoKeys( InRec )
+        {
+            InRec.addEventListener("touchstart", () => {InRec.style.opacity = "1";})
+            InRec.addEventListener("touchend", () => {InRec.style.opacity = "0.5";})
+        }
+
+        for(var i = 0 ; i < recAll.length ; i++)
+        {
+            POwO_addEventListen_touchstartUp_PianoKeys(recAll[i])
+        }
+
+        btn_wave_sin.addEventListener("touchstart" , () => {POwO_Action_TypeSin()})
+        btn_wave_tri.addEventListener("touchstart" , () => {POwO_Action_TypeTri()})
+        btn_wave_saw.addEventListener("touchstart" , () => {POwO_Action_TypeSaw()})
+        btn_wave_sqr.addEventListener("touchstart" , () => {POwO_Action_TypeSqr()})
+
+        btn_keyTextToggle.addEventListener("touchstart" , () => {POwO_Action_KeyTextToggle()})
+        btn_adktSetup.addEventListener("touchstart" , (event) => {POwO_adktSetup()})
+        btn_adktSetup.addEventListener("touchend" , (event) => 
+        {
+            for(var i = 0 ; i < recAll.length ; i++)
+            {
+                POwO_ifKeyDownSetNone(event, chaAll[i], recAll[i]);
+            }
+        })
+
+        btn_oct_d.addEventListener("touchstart" , () => {POwO_Action_OctaveDown()})
+        btn_oct_u.addEventListener("touchstart" , () => {POwO_Action_OctaveUp()})
+        btn_smi_d.addEventListener("touchstart" , () => {POwO_Action_SemiDown()})
+        btn_smi_u.addEventListener("touchstart" , () => {POwO_Action_SemiUp()})
+
+        btn_mod_l.addEventListener("touchstart" , () => {POwO_Action_ModL()})
+        btn_prm_l.addEventListener("touchstart" , () => {POwO_Action_PrmL()})
+        btn_prm_d.addEventListener("touchstart" , () => {POwO_Param_Change("-")})
+        btn_prm_u.addEventListener("touchstart" , () => {POwO_Param_Change("+")})
+        btn_prm_r.addEventListener("touchstart" , () => {POwO_Action_PrmR()})
+        btn_mod_r.addEventListener("touchstart" , () => {POwO_Action_ModR()})
+
+
+
+        
+
+        for(var i = 0 ; i < barAll.length ; i++)
+        {
+            barAll[i].style.height = 0 + "px";
         }
 
 
+        setInterval(function(){
+            if (isREADY)
+            {
+                for(var i = 0 ; i < barAll.length ; i++)
+                {
+                    var TargetGain = ADSR_All[i].gain.value;
+                    if (recAll[i].style.opacity === colorON)
+                    {
+                        TargetGain = POwO_Math_Clamp(0,TargetGain + ADSR_attack,ADSR_sustain);
+                    }
+                    else
+                    {
+                        TargetGain = POwO_Math_Clamp(0,TargetGain - ADSR_release,1);
+                    }
 
-    </script>
+                    ADSR_All[i].gain.setValueAtTime(  TargetGain, adkt.currentTime );
+
+                    barAll[i].style.height = (200 * (ADSR_All[i].gain.value / ADSR_sustain) ) + "px";
+                }
+                
+            }
+        },10)
+
+
+  </script>
 </body>
-
-
-
 </html>
