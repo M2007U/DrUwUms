@@ -308,9 +308,11 @@
             POwO_KeyUp(event.key);
         })
         
-        for(var i = 0 ; i < List_Recs.length ; i++)
+        for(var k = 0 ; k < List_Recs.length ; k++)
         {
-            List_Recs[i].addEventListener("touchstart" , (event) => {POwO_KeyDown_PlaySound( event.key )})
+            const currentEventKey = List_Keys[k]
+            List_Recs[k].addEventListener("touchstart" , (event) => {POwO_KeyDown_PlaySound( currentEventKey )})
+            List_Recs[k].addEventListener("touchend" , (event) => {POwO_KeyUp( currentEventKey )})
         }
 
 
