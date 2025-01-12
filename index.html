@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle Toggle</title>
+    <style>
+    
+        .centerContainer
+        {
+            position: fixed;
+            justify-content: center;
+            align-items: center;
+            top:50%;
+            left: 50%;
+            transform:translate(-50%,-50%);
+            
+        }
+
+        .centerRow
+        {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rectangle
+        {
+            width: 60px;
+            height: 60px;
+            background-color: #ffcc00;
+            opacity: 0.5;
+
+            margin: 5px;
+            border: 5px solid transparent;
+            border-collapse: collapse;
+            border-radius: 10px;
+            
+            justify-content: center;
+            align-items: center;
+            
+            display: flex;
+
+            font-size: 16px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .button
+        {
+            width: 30px;
+            height: 30px;
+            background-color: #ffcc00;
+            opacity: 0.5;
+
+            text-align: center;
+
+            margin: 5px;
+            border: 5px solid transparent;
+            border-collapse: collapse;
+            border-radius: 10px;
+            
+            justify-content: center;
+            align-items: center;
+            
+            display: flex;
+
+            font-size: 16px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .bar
+        {
+            width : 40px;
+            height : 200px;
+            background-color: #ffcc00;
+
+            margin: 5px;
+            border: 0px solid transparent;
+            border-collapse: collapse;
+            border-radius: 10px;
+        }
+
+        .blank
+        {
+            width: 60px;
+            height: 60px;
+
+            margin: 10px;
+        }
+
+    </style>
+</head>
+
+<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+    <div class="centerContainer">
+        <div class="centerRow">
+            <div id="rec_1" class="rectangle"><span>1</span></div>
+            <div id="rec_2" class="rectangle"><span>2</span></div>
+            <div id="rec_3" class="rectangle"><span>3</span></div>
+            <div id="rec_4" class="rectangle"><span>4</span></div>
+        </div>
+        <div class="centerRow">
+            <div id="rec_q" class="rectangle"><span>q</span></div>
+            <div id="rec_w" class="rectangle"><span>w</span></div>
+            <div id="rec_e" class="rectangle"><span>e</span></div>
+            <div id="rec_r" class="rectangle"><span>r</span></div>
+        </div>
+        <div class="centerRow">
+            <div id="rec_a" class="rectangle"><span>a</span></div>
+            <div id="rec_s" class="rectangle"><span>s</span></div>
+            <div id="rec_d" class="rectangle"><span>d</span></div>
+            <div id="rec_f" class="rectangle"><span>f</span></div>
+        </div>
+        <div class="centerRow">
+            <div id="rec_z" class="rectangle"><span>z</span></div>
+            <div id="rec_x" class="rectangle"><span>x</span></div>
+            <div id="rec_c" class="rectangle"><span>c</span></div>
+            <div id="rec_v" class="rectangle"><span>v</span></div>
+        </div>
+    </div>
+    <script>
+
+        // ---- ---- ---- ---- grab objects from structure
+
+        const rec_1 = document.getElementById("rec_1");
+        const rec_2 = document.getElementById("rec_2");
+        const rec_3 = document.getElementById("rec_3");
+        const rec_4 = document.getElementById("rec_4");
+
+        const rec_q = document.getElementById("rec_q");
+        const rec_w = document.getElementById("rec_w");
+        const rec_e = document.getElementById("rec_e");
+        const rec_r = document.getElementById("rec_r");
+
+        const rec_a = document.getElementById("rec_a");
+        const rec_s = document.getElementById("rec_s");
+        const rec_d = document.getElementById("rec_d");
+        const rec_f = document.getElementById("rec_f");
+
+        const rec_z = document.getElementById("rec_z");
+        const rec_x = document.getElementById("rec_x");
+        const rec_c = document.getElementById("rec_c");
+        const rec_v = document.getElementById("rec_v");
+
+
+        // ---- ---- ---- ---- prepare global objects
+
+        let colorON = "1"
+        let colorOFF = "0.5"
+
+        const adkt = new (window.AudioContext || window.webkitAudioContext)();
+        console.log("new audioKontext");
+
+        const List_URL =
+        [
+            'cowbell.ogg',  'glass.ogg',    'tamb.ogg',     'triangle.ogg',
+            'hhat.wav',     'wood1.ogg',    'wood2.ogg',    'hhat.wav',
+            'clap.wav',     'snare.wav',    'snare.wav',    'clap.wav',
+            'stone.ogg',    'kick.wav',     'kick.wav',     'stone.ogg'
+        ];
+
+        const List_AudioBuffers = [];
+
+        const List_Keys =
+        [
+            "1","2","3","4",
+            "q","w","e","r",
+            "a","s","d","f",
+            "z","x","c","v"
+        ];
+
+        const List_Recs =
+        [
+            rec_1, rec_2, rec_3, rec_4,
+            rec_q, rec_w, rec_e, rec_r,
+            rec_a, rec_s, rec_d, rec_f,
+            rec_z, rec_x, rec_c, rec_v
+        ];
+
+
+
+
+        async function POwO_loadFile(InFileName)
+        {
+            //convert a sound file to a audioBuffer, so that the audioContext can play it
+            const response = await fetch(InFileName);
+            const arrayBuffer = await response.arrayBuffer();
+            return await adkt.decodeAudioData(arrayBuffer);
+        }
+
+        async function POwO_loadSounds()
+        {
+            //turn every sound file into an audio Buffer and have them in a list
+            for(var i = 0 ; i < List_URL.length ; i++)
+            {
+                const getSmallAudioBuffer = await POwO_loadFile(List_URL[i]);
+                List_AudioBuffers.push( getSmallAudioBuffer );
+            }
+        }
+
+        POwO_loadSounds()
+
+        function POwO_playSound(InSoundIndex)
+        {
+            const bufferNode = adkt.createBufferSource();
+            bufferNode.buffer = List_AudioBuffers[InSoundIndex];
+            bufferNode.connect(adkt.destination);
+            bufferNode.start();
+        }
+
+        function POwO_KeyDown_PlaySound(InComingKey)
+        {
+            for(var i = 0 ; i < List_Keys.length ; i++)
+            {
+                if (InComingKey === List_Keys[i])
+                {
+                    POwO_playSound(i);
+                    List_Recs[i].style.opacity = colorON
+                }
+            }
+        }
+
+        function POwO_KeyUp(InComingKey)
+        {
+            for(var i = 0 ; i < List_Keys.length ; i++)
+            {
+                if (InComingKey === List_Keys[i])
+                {
+                    List_Recs[i].style.opacity = colorOFF
+                }
+            }
+        }
+
+
+
+
+        document.addEventListener('keydown', (event) => {
+            POwO_KeyDown_PlaySound(event.key);
+        });
+
+        document.addEventListener('keyup', (event) => {
+            POwO_KeyUp(event.key);
+        })
+
+
+
+    </script>
+</body>
+
+
+
+</html>
