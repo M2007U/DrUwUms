@@ -361,26 +361,20 @@
                 POwO_metronome_config()
                 GLOBAL_met_pos_cur = 0;
                 GLOBAL_met_javascriptInterval = setInterval(() => {
+
+                    //rhythmArray = [ timeStamp , timeStamp , timeStamp ]
+                    //timeStamp = [ timePosition , channelName , channelName , ... ]
                     
-                    GLOBAL_met_pos_cur += GLOBAL_met_deltaTime
-                    if (GLOBAL_met_pos_cur >= GLOBAL_met_pos_full)
+                    let Temp_CurrentTrialIndex = 0; //rewind the timeline to 0
+                    while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 ) //while it is not pointing at the correct timestamp
                     {
-                        GLOBAL_met_pos_cur = 0
-                    }
-                    field_met_pos_cur.innerText = GLOBAL_met_pos_cur
-
-                    let Temp_CurrentTrialIndex = 0;
-
-                    while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 )
-                    {
-                        Temp_CurrentTrialIndex++
+                        Temp_CurrentTrialIndex++ //try the nest timestamp
                     }
                     //at this point, we should be pointing at the possible playable timestamp
-                    if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)
+                    if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)//yes, this is the time stamp
                     {
-                        
                         let Temp_CurrentTimeStamp = GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex]
-                        for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)
+                        for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)//in a timeStamp, the first element is the timePosition
                         {
                             let Temp_InstrumentIndex = List_Keys.indexOf(Temp_CurrentTimeStamp[i])
                             if (Temp_InstrumentIndex !== -1)
@@ -389,6 +383,14 @@
                             }
                         }
                     }
+
+                    //crank time
+                    GLOBAL_met_pos_cur += GLOBAL_met_deltaTime
+                    if (GLOBAL_met_pos_cur >= GLOBAL_met_pos_full)
+                    {
+                        GLOBAL_met_pos_cur = 0
+                    }
+                    field_met_pos_cur.innerText = GLOBAL_met_pos_cur
 
                 }, GLOBAL_met_interval);
 
