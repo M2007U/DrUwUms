@@ -51,6 +51,7 @@
             height: 30px;
             background-color: #ffcc00;
             opacity: 0.5;
+            color:black;
 
             text-align: center;
 
@@ -98,6 +99,41 @@
             filter: blur(10px); /* Smooth out the edges */
         }
 
+        .settingsBox
+        {
+            height:250px;
+            
+            
+            border-radius: 16px;
+            padding: 16px;
+            margin:8px;
+            
+            font-size: 16px;
+            text-align: left;
+
+            background-color: rgba(192,192,192,0.1);
+        }
+
+        input {
+            padding: 4px;
+            font-size: 12px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            width: 50px;
+            background-color: rgba(96,96,96,0);
+            color:#666;
+        }
+
+        select {
+            padding: 4px;
+            font-size: 12px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            background-color:rgba(96,96,96,0);
+            width: 50px;
+            color:#666
+        }
+
         @keyframes fadeOut {
             0% {
                 opacity: 0.5;
@@ -110,7 +146,7 @@
     </style>
 </head>
 
-<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;background-color: black;">
     <div class="centerContainer">
         <div class="centerRow">
             <div id="rec_1" class="rectangle"><span>1</span></div>
@@ -136,36 +172,81 @@
             <div id="rec_c" class="rectangle"><span>c</span></div>
             <div id="rec_v" class="rectangle"><span>v</span></div>
         </div>
+        <div style="height: 64px;"></div>
+        <div class="settingsBox" style="color:white;height:400px">
+            <font style="font-size:25px;"> Metronome </font>
+            <br><br>
+            interval : <input id="field_metronome_interval" value="20"><br>
+            current time position : <font id="field_metronome_pos_cur"></font> <br>
+            deltaTime : <input id="field_metronome_deltaTime" value="1"><br>
+            full time position : <input id="field_metronome_pos_full" value="100" ><br>
+            <br>
+            channels and notes : <br>
+            <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;">
+0,x
+1,r
+2,d
+3,r</textarea>
+            <br><br>
+            <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" >play</div>
+        </div>
     </div>
     <script>
 
         // ---- ---- ---- ---- grab objects from structure
 
-        const rec_1 = document.getElementById("rec_1");
-        const rec_2 = document.getElementById("rec_2");
-        const rec_3 = document.getElementById("rec_3");
-        const rec_4 = document.getElementById("rec_4");
+        function POwO_docgetel(InName)
+        {
+            return document.getElementById(InName)
+        }
 
-        const rec_q = document.getElementById("rec_q");
-        const rec_w = document.getElementById("rec_w");
-        const rec_e = document.getElementById("rec_e");
-        const rec_r = document.getElementById("rec_r");
+        const rec_1 = POwO_docgetel("rec_1");
+        const rec_2 = POwO_docgetel("rec_2");
+        const rec_3 = POwO_docgetel("rec_3");
+        const rec_4 = POwO_docgetel("rec_4");
 
-        const rec_a = document.getElementById("rec_a");
-        const rec_s = document.getElementById("rec_s");
-        const rec_d = document.getElementById("rec_d");
-        const rec_f = document.getElementById("rec_f");
+        const rec_q = POwO_docgetel("rec_q");
+        const rec_w = POwO_docgetel("rec_w");
+        const rec_e = POwO_docgetel("rec_e");
+        const rec_r = POwO_docgetel("rec_r");
 
-        const rec_z = document.getElementById("rec_z");
-        const rec_x = document.getElementById("rec_x");
-        const rec_c = document.getElementById("rec_c");
-        const rec_v = document.getElementById("rec_v");
+        const rec_a = POwO_docgetel("rec_a");
+        const rec_s = POwO_docgetel("rec_s");
+        const rec_d = POwO_docgetel("rec_d");
+        const rec_f = POwO_docgetel("rec_f");
+
+        const rec_z = POwO_docgetel("rec_z");
+        const rec_x = POwO_docgetel("rec_x");
+        const rec_c = POwO_docgetel("rec_c");
+        const rec_v = POwO_docgetel("rec_v");
+
+        const field_met_text = POwO_docgetel("field_metronome_text")
+        const field_met_playPause = POwO_docgetel("field_metronome_playPause")
+        const field_met_deltaTime = POwO_docgetel("field_metronome_deltaTime") 
+        const field_met_interval = POwO_docgetel("field_metronome_interval")
+        const field_met_pos_cur = POwO_docgetel("field_metronome_pos_cur")
+        const field_met_pos_full = POwO_docgetel("field_metronome_pos_full")
 
 
         // ---- ---- ---- ---- prepare global objects
 
-        let colorON = "1"
-        let colorOFF = "0.5"
+        let GLOBAL_colorON = "1"
+        let GLOBAL_colorOFF = "0.5"
+        let GLOBAL_met_interval = 1000
+        let GLOBAL_met_deltaTime = 1
+        let GLOBAL_met_rhythm_text = "x:0,0.25,0.5,0.75"
+        let GLOBAL_met_rhythm_array = [[0,"x"],[1,"r"],[2,"d"],[3,"r"]]
+        let GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
+        let GLOBAL_met_pos_full = 100
+        let GLOBAL_met_javascriptInterval;
+
+        /*
+        
+        
+        
+        
+        */
+        
 
         const adkt = new (window.AudioContext || window.webkitAudioContext)();
         console.log("new audioKontext");
@@ -236,7 +317,7 @@
                 if (InComingKey === List_Keys[i])
                 {
                     POwO_playSound(i);
-                    List_Recs[i].style.opacity = colorON
+                    List_Recs[i].style.opacity = GLOBAL_colorON
                     POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 192,230 , 0,64);
                 }
             }
@@ -248,11 +329,80 @@
             {
                 if (InComingKey === List_Keys[i])
                 {
-                    List_Recs[i].style.opacity = colorOFF
+                    List_Recs[i].style.opacity = GLOBAL_colorOFF
                 }
             }
         }
 
+        function POwO_metronome_config()
+        {
+            GLOBAL_met_interval = Number(field_met_interval.value)
+            GLOBAL_met_deltaTime = Number(field_met_deltaTime.value)
+
+            GLOBAL_met_rhythm_text = field_met_text.value
+            Temp_Rythym_Pass0 = GLOBAL_met_rhythm_text.split("\n")
+            GLOBAL_met_rhythm_array = []
+            for(let i = 0 ; i < Temp_Rythym_Pass0.length ; i++)
+            {
+                GLOBAL_met_rhythm_array.push( Temp_Rythym_Pass0[i].split(",") )
+                GLOBAL_met_rhythm_array[i][0] = Number(GLOBAL_met_rhythm_array[i][0])
+            }
+
+            GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
+            GLOBAL_met_pos_full = Number(field_met_pos_full.value)
+
+            console.log(GLOBAL_met_rhythm_array)
+        }
+
+        function POwO_metronome_playPause()
+        {
+            if (field_met_playPause.innerText === "play")
+            {
+                POwO_metronome_config()
+                GLOBAL_met_pos_cur = 0;
+                GLOBAL_met_javascriptInterval = setInterval(() => {
+                    
+                    GLOBAL_met_pos_cur += GLOBAL_met_deltaTime
+                    if (GLOBAL_met_pos_cur >= GLOBAL_met_pos_full)
+                    {
+                        GLOBAL_met_pos_cur = 0
+                    }
+                    field_met_pos_cur.innerText = GLOBAL_met_pos_cur
+
+                    let Temp_CurrentTrialIndex = 0;
+
+                    while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 )
+                    {
+                        Temp_CurrentTrialIndex++
+                    }
+                    //at this point, we should be pointing at the possible playable timestamp
+                    if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)
+                    {
+                        
+                        let Temp_CurrentTimeStamp = GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex]
+                        for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)
+                        {
+                            let Temp_InstrumentIndex = List_Keys.indexOf(Temp_CurrentTimeStamp[i])
+                            if (Temp_InstrumentIndex !== -1)
+                            {
+                                POwO_playSound(Temp_InstrumentIndex)
+                            }
+                        }
+                    }
+
+                }, GLOBAL_met_interval);
+
+                field_met_playPause.innerText = "pause"
+            }
+            else
+            {
+                clearInterval( GLOBAL_met_javascriptInterval )
+                field_met_playPause.innerText = "play"
+            }
+            
+        }
+
+       
 
 
 
