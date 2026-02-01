@@ -93,7 +93,8 @@
 
         .settingsBox
         {
-            height:250px;
+            max-height:500px;
+            max-width: 910px;
             
             
             border-radius: 16px;

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" >
 </head>
 
-<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;">
+<body style="font-family:Calibri, Consolas, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;background-color: black;">
     <div class="centerContainer">
         <div class="centerRow">
             <div id="rec_1" class="rectangle"><span>1</span></div>
@@ -53,19 +53,25 @@
         <div class="settingsBox" style="color:white;height:fit-content">
             <font style="font-size:25px;"> Metronome </font>
             <br><br>
-            interval : <input id="field_metronome_interval" value="20"><br>
-            current time position : <font id="field_metronome_pos_cur"></font> <br>
-            deltaTime : <input id="field_metronome_deltaTime" value="1"><br>
-            full time position : <input id="field_metronome_pos_full" value="100" ><br>
-            <br>
-            channels and notes : <br>
-            <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:150px">
+            <div style="display:flex;" >
+                <div style="width:50%;padding-right: 16px;">
+                    interval :<br><input id="field_metronome_interval" value="200" style="font-size: 25px;"><br><br>
+                    current time position :<br><font id="field_metronome_pos_cur" style="font-size: 25px;">0</font> <br><br>
+                    deltaTime :<br><input id="field_metronome_deltaTime" value="1" style="font-size: 25px;"><br><br>
+                    full time position :<br><input id="field_metronome_pos_full" value="4" style="font-size: 25px;"><br><br>
+                </div>
+                <div style="background-color:white;width:1px;"></div>
+                <div style="width:50%;padding-left:16px">
+                    channels and notes : <br>
+                    <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:150px;max-height: 300px;max-width: 250px;">
 0/x
 1/r
 2/d
 3/r</textarea>
-            <br><br> 
-            <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" >play</div>
+                    <br><br> 
+                    <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" >play</div>
+                </div>
+            </div>            
         </div>
     </div>
     <script src="main.js" ></script>

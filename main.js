@@ -134,7 +134,7 @@ function POwO_KeyDown_PlaySound(InComingKey)
         {
             POwO_playSound(i);
             List_Recs[i].style.opacity = GLOBAL_colorON
-            POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 192,230 , 0,64);
+            POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 128,230 , 0,64);
         }
     }
 }
@@ -190,14 +190,15 @@ function POwO_metronome_playPause()
             if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)//yes, this is the time stamp
             {
                 let Temp_CurrentTimeStamp = GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex]
-                for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)//in a timeStamp, the first element is the timePosition
+
+                for(let i = 0 ; i < List_Recs.length ; i++)
                 {
-                    let Temp_InstrumentIndex = List_Keys.indexOf(Temp_CurrentTimeStamp[i])
-                    if (Temp_InstrumentIndex !== -1)
-                    {
-                        POwO_playSound(Temp_InstrumentIndex)
-                        POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 192,230 , 0,64);
-                    }
+                    List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
+                }
+
+                for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)//in a timeStamp, the first element is the timePosition, for every sound, play that sound
+                {
+                    POwO_KeyDown_PlaySound( Temp_CurrentTimeStamp[i] ) //turn on the LED if needed
                 }
             }
 
@@ -217,6 +218,10 @@ function POwO_metronome_playPause()
     {
         clearInterval( GLOBAL_met_javascriptInterval )
         field_met_playPause.innerText = "play"
+        for(let i = 0 ; i < List_Recs.length ; i++)
+        {
+            List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
+        }
     }
     
 }
