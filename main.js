@@ -69,10 +69,10 @@ console.log("new audioKontext");
 
 const List_URL =
 [
-    'cowbell.ogg',  'glass.ogg',    'tamb.ogg',     'triangle.ogg', 'kick.wav', 'kick.wav', 'kick.wav', 'kick.wav',
-    'hhat.wav',     'wood1.ogg',    'wood2.ogg',    'hhat.wav',     'kick.wav', 'kick.wav', 'kick.wav', 'kick.wav',
-    'clap.wav',     'snare.wav',    'snare.wav',    'clap.wav',     'kick.wav', 'kick.wav', 'kick.wav', 'kick.wav',
-    'stone.ogg',    'kick.wav',     'kick.wav',     'stone.ogg',    'kick.wav', 'kick.wav', 'kick.wav', 'kick.wav',
+    'hhat_basic.wav',   'hhat_707.ogg',     'hhat_9091.ogg',    'hhat_9092.ogg',        'hhat_attack6.ogg', 'hhat_scissors1.ogg',   'hhat_scissors2.ogg',   'hhat_scissors3.ogg',
+    'snare_basic.wav',  'clap.wav',         'clap.wav',         'snare_spray.ogg',      'hhat_light1.ogg',  'hhat_light2.ogg',      'hhat_light3.ogg',      'hhat_light4.ogg',
+    'kick_attack35.ogg','kick_dnc3.ogg',    'kick_dnc3.ogg',    'kick_downstream12.ogg','bottle_01.ogg',    'bottle_02.ogg',        'bottle_03.ogg',        'glass_knock1.ogg',
+    'kick_stone.ogg',   'kick_basic.wav',   'kick_basic.wav',   'kick_stone.ogg',       'wood01.ogg',       'wood02.ogg',           'wood03.ogg',           'wood04.ogg'
 ];
 
 const List_AudioBuffers = [];
