@@ -53,13 +53,17 @@ const field_met_pos_full = POwO_docgetel("field_metronome_pos_full")
 
 let GLOBAL_colorON = "1"
 let GLOBAL_colorOFF = "0.5"
-let GLOBAL_met_interval = 1000
-let GLOBAL_met_deltaTime = 1
+let GLOBAL_met_interval_cur = 0
+let GLOBAL_met_interval_full = 1000
+let GLOBAL_met_deltaTime = 1 //in the sequencer, much many steps it is going to take ?
 let GLOBAL_met_rhythm_text = "x:0,0.25,0.5,0.75"
 let GLOBAL_met_rhythm_array = [[0,"x"],[1,"r"],[2,"d"],[3,"r"]]
 let GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
 let GLOBAL_met_pos_full = 100
 let GLOBAL_met_javascriptInterval;
+
+let GLOBAL_performance_pinA = performance.now()
+let GLOBAL_performance_pinB = performance.now()
 
 
 // ---- ---- ---- ---- ON START
@@ -175,42 +179,62 @@ function POwO_metronome_playPause()
     if (field_met_playPause.innerText === "play")
     {
         POwO_metronome_config()
+        GLOBAL_performance_pinA = performance.now()
         GLOBAL_met_pos_cur = 0;
+        GLOBAL_met_interval_cur = 0;
+        GLOBAL_met_interval_full = Number(field_met_interval.value)
         GLOBAL_met_javascriptInterval = setInterval(() => {
 
-            //rhythmArray = [ timeStamp , timeStamp , timeStamp ]
-            //timeStamp = [ timePosition , channelName , channelName , ... ]
+            //what is deltaTime ?
+            let temp_DeltaTime = performance.now() - GLOBAL_performance_pinA
+            GLOBAL_performance_pinA = performance.now()
+
+            //add hourglass
+            GLOBAL_met_interval_cur += temp_DeltaTime
+            while( GLOBAL_met_interval_cur >= GLOBAL_met_interval_full ) //if hourglass is full
+            {
+                //drain hourglass
+                GLOBAL_met_interval_cur -= GLOBAL_met_interval_full
+
+                //which sounds to play ?
+                //quick reminder of what the sequencer should look like :
+                //rhythmArray = [ timeStamp , timeStamp , timeStamp ]
+                //timeStamp = [ timePosition , channelName , channelName , ... ]
+                
+                let Temp_CurrentTrialIndex = 0; //rewind the timeline to 0
+                while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 ) //while it is not pointing at the correct timestamp
+                {
+                    Temp_CurrentTrialIndex++ //try the next timestamp
+                }
+                //at this point, we should be pointing at the possible playable timestamp
+                if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)//yes, this is the time stamp
+                {
+                    let Temp_CurrentTimeStamp = GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex]
+
+                    for(let i = 0 ; i < List_Recs.length ; i++)
+                    {
+                        List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
+                    }
+
+                    for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)//in a timeStamp, the first element is the timePosition, for every sound, play that sound
+                    {
+                        POwO_KeyDown_PlaySound( Temp_CurrentTimeStamp[i] ) //turn on the LED if needed
+                    }
+                }
+
+                //crank time
+                GLOBAL_met_pos_cur += GLOBAL_met_deltaTime //next sequencer slot
+                if (GLOBAL_met_pos_cur >= GLOBAL_met_pos_full)
+                {
+                    GLOBAL_met_pos_cur = 0
+                }
+                field_met_pos_cur.innerText = GLOBAL_met_pos_cur
+
+            }
+
             
-            let Temp_CurrentTrialIndex = 0; //rewind the timeline to 0
-            while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 ) //while it is not pointing at the correct timestamp
-            {
-                Temp_CurrentTrialIndex++ //try the next timestamp
-            }
-            //at this point, we should be pointing at the possible playable timestamp
-            if (GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] === GLOBAL_met_pos_cur)//yes, this is the time stamp
-            {
-                let Temp_CurrentTimeStamp = GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex]
 
-                for(let i = 0 ; i < List_Recs.length ; i++)
-                {
-                    List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
-                }
-
-                for(let i = 1 ; i < Temp_CurrentTimeStamp.length ; i++)//in a timeStamp, the first element is the timePosition, for every sound, play that sound
-                {
-                    POwO_KeyDown_PlaySound( Temp_CurrentTimeStamp[i] ) //turn on the LED if needed
-                }
-            }
-
-            //crank time
-            GLOBAL_met_pos_cur += GLOBAL_met_deltaTime
-            if (GLOBAL_met_pos_cur >= GLOBAL_met_pos_full)
-            {
-                GLOBAL_met_pos_cur = 0
-            }
-            field_met_pos_cur.innerText = GLOBAL_met_pos_cur
-
-        }, GLOBAL_met_interval);
+        }, 1);
 
         field_met_playPause.innerText = "pause"
     }
