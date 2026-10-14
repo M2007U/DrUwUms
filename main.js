@@ -156,17 +156,71 @@ function POwO_KeyUp(InComingKey)
 
 function POwO_metronome_config()
 {
-    GLOBAL_met_interval = Number(field_met_interval.value)
-    GLOBAL_met_deltaTime = Number(field_met_deltaTime.value)
+    GLOBAL_met_interval = Number(field_met_interval.value) //size of hourglass
+    GLOBAL_met_deltaTime = Number(field_met_deltaTime.value) //how much time_stamps to jump ?
+
+    /*
+    rhythm_text is what the user types, something like "0/x\n1/r\n2/w\n3/r"
+    rhythm_array is a 2D array such that
+    rhythm_array = [time_stamp , time_stamp , ... , time_stamp]
+    time_stamp = [time_position , channelName , channelName , ... , channelName]
+    */
 
     GLOBAL_met_rhythm_text = field_met_text.value
-    Temp_Rythym_Pass0 = GLOBAL_met_rhythm_text.split("\n") //turn each line into an element
-    GLOBAL_met_rhythm_array = []
-    for(let i = 0 ; i < Temp_Rythym_Pass0.length ; i++)
+
+    if (GLOBAL_met_rhythm_text !== "")
     {
-        GLOBAL_met_rhythm_array.push( Temp_Rythym_Pass0[i].split("/") ) //take every element, split it by usng "/"
-        GLOBAL_met_rhythm_array[i][0] = Number(GLOBAL_met_rhythm_array[i][0]) //make sure the given time stamp (element 0) is a number, not a string
+        //do some cleaning first
+        Temp_Rythym_Pass0 = GLOBAL_met_rhythm_text.split("\n") //turn each line into an element
+        for(let i = Temp_Rythym_Pass0.length - 1 ; i >= 0 ; i-- ) //make sure no empty lines
+        {
+            if ( Temp_Rythym_Pass0[i] === "" )
+            {
+                Temp_Rythym_Pass0.splice(i,1)
+            }
+        }
+
+        //prepare array
+        GLOBAL_met_rhythm_array = []
+        for(let i = 0 ; i < Temp_Rythym_Pass0.length ; i++)
+        {
+            GLOBAL_met_rhythm_array.push( Temp_Rythym_Pass0[i].split("/") ) //take every element, split it by usng "/"
+            GLOBAL_met_rhythm_array[i][0] = Number(GLOBAL_met_rhythm_array[i][0]) //make sure the given time stamp (element 0) is a number, not a string
+        }
+
+        //at this point rhythm_array might not be in order
+        GLOBAL_met_rhythm_array.sort((a,b)=>{return a[0]-b[0]})
+        console.log("raw rhythym array : " + JSON.stringify(GLOBAL_met_rhythm_array))
+
+        //maybe rhythm_array has multiple lines with the same time_Position, we can combine them into a single time_stamp 
+        let temp_Index = 0
+        while(temp_Index < GLOBAL_met_rhythm_array.length - 1)
+        {
+            console.log("temp_Index : " + temp_Index)
+            console.log("time stamp A : " + JSON.stringify(GLOBAL_met_rhythm_array[temp_Index]))
+            console.log("time stamp B : " + JSON.stringify(GLOBAL_met_rhythm_array[temp_Index+1]))
+            console.log("range check : " + JSON.stringify(temp_Index < GLOBAL_met_rhythm_array.length - 1))
+            while ( temp_Index < GLOBAL_met_rhythm_array.length - 1 && GLOBAL_met_rhythm_array[temp_Index][0] === GLOBAL_met_rhythm_array[temp_Index+1][0])
+            {
+                //attempt combine
+                console.log("repeat time stamp : start")
+                for(let j = 1 ; j < GLOBAL_met_rhythm_array[temp_Index+1].length ; j++)
+                {
+                    GLOBAL_met_rhythm_array[temp_Index].push( GLOBAL_met_rhythm_array[temp_Index+1][j] )
+                }
+                GLOBAL_met_rhythm_array.splice(temp_Index + 1,1)
+                console.log("repeat time stamp : end")
+            }
+            temp_Index ++
+        }
+
+        //now the array should be ready
     }
+    else
+    {
+        GLOBAL_met_rhythm_array = [[0,"-"]] //nothing will play
+    }
+    
 
     GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
     GLOBAL_met_pos_full = Number(field_met_pos_full.value)
