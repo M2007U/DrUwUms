@@ -49,6 +49,7 @@ const field_met_deltaTime = POwO_docgetel("field_metronome_deltaTime")
 const field_met_interval = POwO_docgetel("field_metronome_interval")
 const field_met_pos_cur = POwO_docgetel("field_metronome_pos_cur")
 const field_met_pos_full = POwO_docgetel("field_metronome_pos_full")
+const field_met_page = POwO_docgetel("field_metronome_page")
 
 
 
@@ -76,6 +77,9 @@ const field_visual_color_a_max = POwO_docgetel("field_visual_color_A_max")
 var GLOBAL_colorON = "1"
 var GLOBAL_colorOFF = "0.25"
 
+var GLOBAL_pageIndex = 0 //0:FL_Basic , 1:Kontakt
+var GLOBAL_pageName = ["FL_Basic","Kontakt"]
+
 var GLOBAL_met_interval_cur = 0
 var GLOBAL_met_interval_full = 1000
 var GLOBAL_met_deltaTime = 1 //in the sequencer, much many steps it is going to take ?
@@ -99,18 +103,27 @@ var GLOBAL_performance_pinB = performance.now()
 
 // ---- ---- ---- ---- ON START
 
-const adkt = new (window.AudioContext || window.webkitAudioContext)();
+var adkt = new (window.AudioContext || window.webkitAudioContext)();
 console.log("new audioKontext");
 
 const List_URL =
 [
-    'hhat_basic.wav',   'hhat_707.ogg',     'hhat_9091.ogg',    'hhat_9092.ogg',        'hhat_attack6.ogg', 'hhat_scissors1.ogg',   'hhat_scissors2.ogg',   'hhat_scissors3.ogg',
-    'snare_basic.wav',  'clap.wav',         'clap.wav',         'snare_spray.ogg',      'hhat_light1.ogg',  'hhat_light2.ogg',      'hhat_light3.ogg',      'hhat_light4.ogg',
-    'kick_attack35.ogg','kick_dnc3.ogg',    'kick_dnc3.ogg',    'kick_downstream12.ogg','bottle_01.ogg',    'bottle_02.ogg',        'bottle_03.ogg',        'glass_knock1.ogg',
-    'kick_stone.ogg',   'kick_basic.wav',   'kick_basic.wav',   'kick_stone.ogg',       'wood01.ogg',       'wood02.ogg',           'wood03.ogg',           'wood04.ogg'
-];
+    [ //FL_Basic
+        'hhat_basic.wav',       'hhat_707.ogg',     'hhat_9091.ogg',    'hhat_9092.ogg',        'hhat_attack6.ogg', 'hhat_scissors1.ogg',   'hhat_scissors2.ogg',   'hhat_scissors3.ogg',
+        'snare_basic.wav',      'clap.wav',         'clap.wav',         'snare_spray.ogg',      'hhat_light1.ogg',  'hhat_light2.ogg',      'hhat_light3.ogg',      'hhat_light4.ogg',
+        'kick_attack35.ogg',    'kick_dnc3.ogg',    'kick_dnc3.ogg',    'kick_downstream12.ogg','bottle_01.ogg',    'bottle_02.ogg',        'bottle_03.ogg',        'glass_knock1.ogg',
+        'kick_stone.ogg',       'kick_basic.wav',   'kick_basic.wav',   'kick_stone.ogg',       'wood01.ogg',       'wood02.ogg',           'wood03.ogg',           'wood04.ogg'
+    ]
+    ,
+    [ //Kontakt
+        'rim_stick.ogg',        'stick.ogg',        'rim_pluck.ogg',    'rim_stick.ogg',        'jump_01.ogg',      'jump_02.ogg',          'kick_punch.ogg',       'kick_punch.ogg',
+        'tom_01.ogg',           'tom_02.ogg',       'tom_03.ogg',       'hhat_tamb.ogg',        'tuba_01.ogg',      'tuba_02.ogg',          'tuba_03.ogg',          'kick_punch.ogg',
+        'kick_reso_01.ogg',     'snare.ogg',        'snare.ogg',        'kick_reso_02.ogg',     'kick_punch.ogg',   'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg',
+        'kick_piano_01.ogg',    'kick_punch.ogg',   'kick_punch.ogg',   'kick_piano_02.ogg',    'kick_punch.ogg',   'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg'
+    ] //refer to GLOBAL_pageName
+]
 
-const List_AudioBuffers = [];
+var List_AudioBuffers = []; //will be a 2D array
 
 const List_Keys =
 [
@@ -154,21 +167,36 @@ async function POwO_loadFile(InFileName)
 async function POwO_loadSounds()
 {
     //turn every sound file into an audio Buffer and have them in a list
-    for(var i = 0 ; i < List_URL.length ; i++)
+    for(let i = 0 ; i < List_URL.length ; i++) //for every packets/groups/page
     {
-        const getSmallAudioBuffer = await POwO_loadFile(List_URL[i]);
-        List_AudioBuffers.push( getSmallAudioBuffer );
+        let emptyPage = []
+        for(let j = 0 ; j < List_URL[i].length ; j++)
+        {
+            let temp_fullFileName = "audio/" + GLOBAL_pageName[i] + "/" + List_URL[i][j]
+            let getSmallAudioBuffer = await POwO_loadFile( temp_fullFileName );
+            emptyPage.push( getSmallAudioBuffer );
+            console.log("loaded sound : " + temp_fullFileName)
+        }
+        List_AudioBuffers.push( emptyPage )
     }
+    console.log("loading sound done OwO")
 }
 
 POwO_loadSounds() //will run on START
 
 function POwO_playSound(InSoundIndex)
 {
-    const bufferNode = adkt.createBufferSource();
-    bufferNode.buffer = List_AudioBuffers[InSoundIndex];
-    bufferNode.connect(adkt.destination);
-    bufferNode.start();
+    if (List_URL.length === List_AudioBuffers.length)
+    {
+        let bufferNode = adkt.createBufferSource();
+        bufferNode.buffer = List_AudioBuffers[GLOBAL_pageIndex][InSoundIndex];
+        bufferNode.connect(adkt.destination);
+        bufferNode.start();
+    }
+    else
+    {
+        console.log("<!> audio buffers not ready yet OoO/")
+    }
 }
 
 function POwO_KeyDown_PlaySound(InComingKey)
@@ -227,7 +255,7 @@ function POwO_KeyUp(InComingKey)
     }
 }
 
-function POwO_metronome_config()
+function POwO_metronome_config() //setup and tidy up and generate or update the Rhythm Array
 {
     GLOBAL_met_interval = Number(field_met_interval.value) //size of hourglass
     GLOBAL_met_deltaTime = Number(field_met_deltaTime.value) //how much time_stamps to jump ?
@@ -456,7 +484,12 @@ function POwO_visual_config_MainColor()
 }
 
 document.addEventListener('keydown', (event) => {
-    POwO_KeyDown_PlaySound(event.key);
+    switch (event.key)
+    {
+        case "9" : GLOBAL_pageIndex = 0 ; field_met_page.innerText = GLOBAL_pageIndex ; break ;
+        case "o" : GLOBAL_pageIndex = 1 ; field_met_page.innerText = GLOBAL_pageIndex ; break ;
+        default : POwO_KeyDown_PlaySound(event.key) ; break ;
+    }
 });
 
 document.addEventListener('keyup', (event) => {
