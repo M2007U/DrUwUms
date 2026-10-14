@@ -50,28 +50,40 @@
             <div id="rec_," class="rectangle"><span>,</span></div>
         </div>
         <div style="height: 64px;"></div>
-        <div class="settingsBox" style="color:white;height:fit-content">
-            <font style="font-size:25px;"> Metronome </font>
-            <br><br>
-            <div style="display:flex;" >
-                <div style="width:50%;padding-right: 16px;">
-                    interval :<br><input id="field_metronome_interval" value="200" style="font-size: 25px;"><br><br>
-                    current time position :<br><font id="field_metronome_pos_cur" style="font-size: 25px;">0</font> <br><br>
-                    deltaTime :<br><input id="field_metronome_deltaTime" value="1" style="font-size: 25px;"><br><br>
-                    full time position :<br><input id="field_metronome_pos_full" value="4" style="font-size: 25px;"><br><br>
+        <div style="display:flex;">
+            <div style="width:60%;display: flex;flex-direction: column;">
+                <div class="settingsBox" style="height:50%;color:white;">
+                    <b>Basic Settings</b><br><br>
+                    interval :<input id="field_metronome_interval" value="200" style="font-size: 12px;"><br>
+                    current time position : <font id="field_metronome_pos_cur" style="font-size: 12px;">0</font> <br>
+                    deltaTime :<input id="field_metronome_deltaTime" value="1" style="font-size: 12px;"><br>
+                    full time position :<input id="field_metronome_pos_full" value="4" style="font-size: 12px;"><br>
                 </div>
-                <div style="background-color:white;width:1px;"></div>
-                <div style="width:50%;padding-left:16px">
-                    channels and notes : <br>
-                    <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:150px;max-height: 300px;max-width: 250px;">
+                <div class="settingsBox" style="height:50%;color:white;justify-items: center;">
+                    <b>Visual Settings</b><br>
+                    <br>
+                    <input id="field_visual_backgroundIsBlack" type="checkbox" style="width:16px;height:16px" onclick="POwO_visual_backGround()"> toggle black background <br>
+                    <input id="field_visual_circles_show" type="checkbox" checked style="width:16px;height:16px"> show random circles <br>
+                    <br>
+                    Radius Min & Max : <input id="field_visual_circles_R_min" style="font-size:12px" value="100"> ~ <input id="field_visual_circles_R_max" style="font-size:12px" value="500"> <br>
+                    Duration Min & Max : <input id="field_visual_circles_dur_min" style="font-size:12px" value="1000"> ~ <input id="field_visual_circles_dur_max" style="font-size:12px" value="2000"><br>
+                    <br>
+                    R Min & Max : <input id="field_visual_color_R_min" style="font-size:12px" value="230"> ~ <input id="field_visual_color_R_max" style="font-size:12px" value="255"> <br>
+                    G Min & Max : <input id="field_visual_color_G_min" style="font-size:12px" value="128"> ~ <input id="field_visual_color_G_max" style="font-size:12px" value="230"> <br>
+                    B Min & Max : <input id="field_visual_color_B_min" style="font-size:12px" value="0"> ~ <input id="field_visual_color_B_max" style="font-size:12px" value="64"> <br>
+                    A Min & Max : <input id="field_visual_color_A_min" style="font-size:12px" value="0.5"> ~ <input id="field_visual_color_A_max" style="font-size:12px" value="0.8"> <br>
+                </div>
+            </div>
+            <div class="settingsBox" style="width:40%;color:white;height:600px">
+                <b>Channels and Notes :</b> <br><br>
+                <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:350px;width: 250px;resize: none;">
 0/x
 1/r
 2/d
 3/r</textarea>
-                    <br><br> 
-                    <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" >play</div>
-                </div>
-            </div>            
+                <br><br> 
+                <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" style="width:100px;border-radius: 100px;">play</div>
+            </div>
         </div>
     </div>
     <script src="main.js" ></script>

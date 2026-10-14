@@ -41,6 +41,8 @@ const rec_n = POwO_docgetel("rec_n");
 const rec_m = POwO_docgetel("rec_m");
 const rec_coma = POwO_docgetel("rec_,");
 
+
+
 const field_met_text = POwO_docgetel("field_metronome_text")
 const field_met_playPause = POwO_docgetel("field_metronome_playPause")
 const field_met_deltaTime = POwO_docgetel("field_metronome_deltaTime") 
@@ -49,21 +51,50 @@ const field_met_pos_cur = POwO_docgetel("field_metronome_pos_cur")
 const field_met_pos_full = POwO_docgetel("field_metronome_pos_full")
 
 
+
+const field_visual_circles_show = POwO_docgetel("field_visual_circles_show")
+const field_visual_backgroundIsBlack = POwO_docgetel("field_visual_backgroundIsBlack") 
+
+const field_visual_circles_r_min = POwO_docgetel("field_visual_circles_R_min")
+const field_visual_circles_r_max = POwO_docgetel("field_visual_circles_R_max")
+const field_visual_circles_dur_min = POwO_docgetel("field_visual_circles_dur_min")
+const field_visual_circles_dur_max = POwO_docgetel("field_visual_circles_dur_max")
+
+const field_visual_color_r_min = POwO_docgetel("field_visual_color_R_min")
+const field_visual_color_g_min = POwO_docgetel("field_visual_color_G_min")
+const field_visual_color_b_min = POwO_docgetel("field_visual_color_B_min")
+const field_visual_color_a_min = POwO_docgetel("field_visual_color_A_min")
+
+const field_visual_color_r_max = POwO_docgetel("field_visual_color_R_max")
+const field_visual_color_g_max = POwO_docgetel("field_visual_color_G_max")
+const field_visual_color_b_max = POwO_docgetel("field_visual_color_B_max")
+const field_visual_color_a_max = POwO_docgetel("field_visual_color_A_max")
+
+
 // ---- ---- ---- ---- prepare global objects
 
-let GLOBAL_colorON = "1"
-let GLOBAL_colorOFF = "0.5"
-let GLOBAL_met_interval_cur = 0
-let GLOBAL_met_interval_full = 1000
-let GLOBAL_met_deltaTime = 1 //in the sequencer, much many steps it is going to take ?
-let GLOBAL_met_rhythm_text = "x:0,0.25,0.5,0.75"
-let GLOBAL_met_rhythm_array = [[0,"x"],[1,"r"],[2,"d"],[3,"r"]]
-let GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
-let GLOBAL_met_pos_full = 100
-let GLOBAL_met_javascriptInterval;
+var GLOBAL_colorON = "1"
+var GLOBAL_colorOFF = "0.25"
 
-let GLOBAL_performance_pinA = performance.now()
-let GLOBAL_performance_pinB = performance.now()
+var GLOBAL_met_interval_cur = 0
+var GLOBAL_met_interval_full = 1000
+var GLOBAL_met_deltaTime = 1 //in the sequencer, much many steps it is going to take ?
+var GLOBAL_met_rhythm_text = "x:0,0.25,0.5,0.75"
+var GLOBAL_met_rhythm_array = [[0,"x"],[1,"r"],[2,"d"],[3,"r"]]
+var GLOBAL_met_pos_cur = 0 //0~1, where this is a bar
+var GLOBAL_met_pos_full = 100
+var GLOBAL_met_javascriptInterval;
+
+var GLOBAL_visual_circles_radius = [100,500]
+var GLOBAL_visual_circles_duration = [1000,2000]
+
+var GLOBAL_visual_color_r = [230,255]
+var GLOBAL_visual_color_g = [128,230]
+var GLOBAL_visual_color_b = [0,64]
+var GLOBAL_visual_color_a = [0.5,0.8]
+
+var GLOBAL_performance_pinA = performance.now()
+var GLOBAL_performance_pinB = performance.now()
 
 
 // ---- ---- ---- ---- ON START
@@ -97,10 +128,20 @@ const List_Recs =
     rec_z, rec_x, rec_c, rec_v, rec_b, rec_n, rec_m, rec_coma
 ];
 
+for(let i = 0 ; i < List_Recs.length ; i++)
+{
+    List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
+}
+
 
 
 
 //---- ---- ---- ---- POwO Functions : Audio
+
+function POwO_Math_LERP(inA, inB, inT)
+{
+    return ( inB - inA ) * inT + inA
+}
 
 async function POwO_loadFile(InFileName)
 {
@@ -138,7 +179,39 @@ function POwO_KeyDown_PlaySound(InComingKey)
         {
             POwO_playSound(i);
             List_Recs[i].style.opacity = GLOBAL_colorON
-            POwO_RandomCircle(100,500 , 500,0,0,500 , 230,255 , 128,230 , 0,64);
+
+            if (field_visual_circles_show.checked)
+            {
+                POwO_RandomCircle(
+                    GLOBAL_visual_circles_radius[0],
+                    GLOBAL_visual_circles_radius[1],
+
+                    GLOBAL_visual_circles_duration[0],
+                    GLOBAL_visual_circles_duration[1],
+
+                    GLOBAL_visual_circles_radius[1],
+                    0,
+                    0,
+                    GLOBAL_visual_circles_radius[1],
+
+                    GLOBAL_visual_color_r[0],
+                    GLOBAL_visual_color_r[1],
+
+                    GLOBAL_visual_color_g[0],
+                    GLOBAL_visual_color_g[1],
+
+                    GLOBAL_visual_color_b[0],
+                    GLOBAL_visual_color_b[1],
+
+                    GLOBAL_visual_color_a[0],
+                    GLOBAL_visual_color_a[1]
+                )
+                console.log("circle : show")
+            }
+            else
+            {
+                console.log("circle : hide")
+            }
         }
     }
 }
@@ -254,6 +327,7 @@ function POwO_metronome_playPause()
                 //quick reminder of what the sequencer should look like :
                 //rhythmArray = [ timeStamp , timeStamp , timeStamp ]
                 //timeStamp = [ timePosition , channelName , channelName , ... ]
+                //and the array is sorted based on timePosition
                 
                 let Temp_CurrentTrialIndex = 0; //rewind the timeline to 0
                 while( GLOBAL_met_rhythm_array[Temp_CurrentTrialIndex][0] < GLOBAL_met_pos_cur && Temp_CurrentTrialIndex < GLOBAL_met_rhythm_array.length - 1 ) //while it is not pointing at the correct timestamp
@@ -310,11 +384,23 @@ function POwO_metronome_playPause()
 
 // ---- ---- ---- ---- POwO Functions : visual
 
+function POwO_visual_backGround()
+{
+    if (field_visual_backgroundIsBlack.checked)
+    {
+        document.body.style.backgroundColor = "rgba(0,0,0,1)"
+    }
+    else
+    {
+        document.body.style.backgroundColor = "rgba(0,0,0,0)"
+    }
+}
+
 function POwO_RandomCircle
 (
-    InRadiusMin, InRadiusMax,
+    InRadiusMin, InRadiusMax, InDurationMin, InDurationMax,
     InMarginR , InMarginU, InMarginL, InMarginD,
-    InColorRmin, InColorRmax, InColorGmin, InColorGmax, InColorBmin, InColorBmax
+    InColorRmin, InColorRmax, InColorGmin, InColorGmax, InColorBmin, InColorBmax, InColorAmin, InColorAmax
 )
 {
     
@@ -323,34 +409,51 @@ function POwO_RandomCircle
     circle.classList.add('circle');
 
     // Set random size
-    const size = Math.random() * (InRadiusMax - InRadiusMin) + InRadiusMin; // Random size between 10px and 60px
+    let size = POwO_Math_LERP( InRadiusMin , InRadiusMax , Math.random() )// Random size between 10px and 60px
     circle.style.width = `${size}px`;
     circle.style.height = `${size}px`;
 
     // Set random position
-    const x = Math.random() * (window.innerWidth - InMarginR - InMarginL ) + InMarginL ;
-    const y = Math.random() * (window.innerHeight - InMarginD - InMarginU) + InMarginU ;
+    let x = POwO_Math_LERP( InMarginL , window.innerWidth - InMarginR , Math.random())
+    let y = POwO_Math_LERP( InMarginU , window.innerHeight - InMarginD , Math.random())
     circle.style.left = `${x}px`;
     circle.style.top = `${y}px`;
 
     // Set random color
-    const r = Math.floor(Math.random() * (InColorRmax - InColorRmin) + InColorRmin);
-    const g = Math.floor(Math.random() * (InColorGmax - InColorGmin) + InColorGmin);
-    const b = Math.floor(Math.random() * (InColorBmax - InColorBmin) + InColorBmin);
-    circle.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+    let r = Math.floor(POwO_Math_LERP( InColorRmin , InColorRmax , Math.random()))
+    let g = Math.floor(POwO_Math_LERP( InColorGmin , InColorGmax , Math.random()))
+    let b = Math.floor(POwO_Math_LERP( InColorBmin , InColorBmax , Math.random()))
+    let a = (POwO_Math_LERP( InColorAmin , InColorAmax , Math.random()))
+    circle.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a})`;
 
     // Append the circle to the body
     document.body.appendChild(circle);
 
     // Remove the circle after the fade-out animation ends
+    let d = Math.floor(POwO_Math_LERP( InDurationMin , InDurationMax , Math.random() ))
     setTimeout(() => {
         circle.remove();
-    }, 2000); // Match the duration of the fadeOut animation (2s)
+    }, d); // Match the duration of the fadeOut animation (2s)
 }
 
+function POwO_visual_config_MainColor()
+{
+    let mainColorRGB = [
+        Math.floor((GLOBAL_visual_color_r[0] + GLOBAL_visual_color_r[1]) / 2) ,
+        Math.floor((GLOBAL_visual_color_g[0] + GLOBAL_visual_color_g[1]) / 2 ),
+        Math.floor((GLOBAL_visual_color_b[0] + GLOBAL_visual_color_b[1]) / 2 ),
+    ]
 
+    let RGBString = "rgb(" + mainColorRGB[0].toString() + "," + mainColorRGB[1].toString() + "," + mainColorRGB[2].toString() + ")" 
 
+    for(let i = 0 ; i < List_Recs.length ; i++)
+    {
+        List_Recs[i].style.backgroundColor = RGBString
+        List_Recs[i].style.opacity = GLOBAL_colorOFF //turn off the LED
+    }
 
+    field_met_playPause.style.backgroundColor = RGBString
+}
 
 document.addEventListener('keydown', (event) => {
     POwO_KeyDown_PlaySound(event.key);
@@ -359,6 +462,19 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
     POwO_KeyUp(event.key);
 })
+
+field_visual_circles_r_min.addEventListener("change",(event)=>{GLOBAL_visual_circles_radius[0] = Number(field_visual_circles_r_min.value)})
+field_visual_circles_r_max.addEventListener("change",(event)=>{GLOBAL_visual_circles_radius[1] = Number(field_visual_circles_r_max.value)})
+field_visual_circles_dur_min.addEventListener("change",(event)=>{GLOBAL_visual_circles_duration[0] = Number(field_visual_circles_dur_min.value)})
+field_visual_circles_dur_max.addEventListener("change",(event)=>{GLOBAL_visual_circles_duration[1] = Number(field_visual_circles_dur_max.value)})
+field_visual_color_r_min.addEventListener("change",(event)=>{GLOBAL_visual_color_r[0] = Number(field_visual_color_r_min.value) ; POwO_visual_config_MainColor()})
+field_visual_color_r_max.addEventListener("change",(event)=>{GLOBAL_visual_color_r[1] = Number(field_visual_color_r_max.value) ; POwO_visual_config_MainColor()})
+field_visual_color_g_min.addEventListener("change",(event)=>{GLOBAL_visual_color_g[0] = Number(field_visual_color_g_min.value) ; POwO_visual_config_MainColor()})
+field_visual_color_g_max.addEventListener("change",(event)=>{GLOBAL_visual_color_g[1] = Number(field_visual_color_g_max.value) ; POwO_visual_config_MainColor()})
+field_visual_color_b_min.addEventListener("change",(event)=>{GLOBAL_visual_color_b[0] = Number(field_visual_color_b_min.value) ; POwO_visual_config_MainColor()})
+field_visual_color_b_max.addEventListener("change",(event)=>{GLOBAL_visual_color_b[1] = Number(field_visual_color_b_max.value) ; POwO_visual_config_MainColor()})
+field_visual_color_a_min.addEventListener("change",(event)=>{GLOBAL_visual_color_a[0] = Number(field_visual_color_a_min.value) ; POwO_visual_config_MainColor()})
+field_visual_color_a_max.addEventListener("change",(event)=>{GLOBAL_visual_color_a[1] = Number(field_visual_color_a_max.value) ; POwO_visual_config_MainColor()})
 
 for(var k = 0 ; k < List_Recs.length ; k++)
 {
