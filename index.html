@@ -49,10 +49,10 @@
             <div id="rec_m" class="rectangle"><span>m</span></div>
             <div id="rec_," class="rectangle"><span>,</span></div>
         </div>
-        <div style="height: 512px;"></div>
-        <div style="display:flex;">
-            <div style="width:60%;display: flex;flex-direction: column;">
-                <div class="settingsBox" style="height:50%;color:white;">
+        <div style="height: 350px;"></div>
+        <div style="display:flex;height:600px"> <!--settings row-->
+            <div style="width:60%;display: flex;flex-direction: column;"> <!--left column-->
+                <div class="settingsBox" style="height:40%;color:white;"> <!--upper part-->
                     <b>Basic Settings</b><br><br>
                     interval :<input id="field_metronome_interval" value="200" style="font-size: 12px;"><br>
                     current time position : <font id="field_metronome_pos_cur" style="font-size: 12px;">0</font> <br>
@@ -60,7 +60,7 @@
                     full time position :<input id="field_metronome_pos_full" value="4" style="font-size: 12px;"><br>
                     page Index : <font id="field_metronome_page" style="font-size: 12px">0</font><br>
                 </div>
-                <div class="settingsBox" style="height:50%;color:white;justify-items: center;">
+                <div class="settingsBox" style="height:60%;color:white;justify-items: center;"> <!--lower part-->
                     <b>Visual Settings</b><br>
                     <br>
                     <input id="field_visual_backgroundIsBlack" type="checkbox" style="width:16px;height:16px" onclick="POwO_visual_backGround()"> toggle black background <br>
@@ -75,16 +75,19 @@
                     A Min & Max : <input id="field_visual_color_A_min" style="font-size:12px" value="0.5"> ~ <input id="field_visual_color_A_max" style="font-size:12px" value="0.8"> <br>
                 </div>
             </div>
-            <div class="settingsBox" style="width:40%;color:white;height:600px">
-                <b>Channels and Notes :</b> <br><br>
-                <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:350px;width: 250px;resize: none;">
+            <div style="width:40%;display: flex;flex-direction: column;"> <!--right column-->
+                <div class="settingsBox" style="color:white;height:100%"> 
+                    <b>Channels and Notes :</b> <br><br>
+                    <textarea id="field_metronome_text" style="background-color: rgba(0,0,0,0);color:white;height:425px;width: 200px;resize: none;">
 0/x
 1/r
 2/d
 3/r</textarea>
-                <br><br> 
-                <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" style="width:100px;border-radius: 100px;">play</div>
+                    <br><br> 
+                    <div id="field_metronome_playPause" class="button" onclick="POwO_metronome_playPause()" style="width:100px;border-radius: 100px;">play</div>
+                </div>
             </div>
+            
         </div>
     </div>
     <script src="main.js" ></script>

@@ -77,8 +77,8 @@ const field_visual_color_a_max = POwO_docgetel("field_visual_color_A_max")
 var GLOBAL_colorON = "1"
 var GLOBAL_colorOFF = "0.25"
 
-var GLOBAL_pageIndex = 0 //0:FL_Basic , 1:Kontakt
-var GLOBAL_pageName = ["FL_Basic","Kontakt"]
+var GLOBAL_pageIndex = 0
+var GLOBAL_pageName = ["FL_Basic","Kontakt","Estairlevakastor"]
 
 var GLOBAL_met_interval_cur = 0
 var GLOBAL_met_interval_full = 1000
@@ -109,18 +109,26 @@ console.log("new audioKontext");
 const List_URL =
 [
     [ //FL_Basic
-        'hhat_basic.wav',       'hhat_707.ogg',     'hhat_9091.ogg',    'hhat_9092.ogg',        'hhat_attack6.ogg', 'hhat_scissors1.ogg',   'hhat_scissors2.ogg',   'hhat_scissors3.ogg',
-        'snare_basic.wav',      'clap.wav',         'clap.wav',         'snare_spray.ogg',      'hhat_light1.ogg',  'hhat_light2.ogg',      'hhat_light3.ogg',      'hhat_light4.ogg',
-        'kick_attack35.ogg',    'kick_dnc3.ogg',    'kick_dnc3.ogg',    'kick_downstream12.ogg','bottle_01.ogg',    'bottle_02.ogg',        'bottle_03.ogg',        'glass_knock1.ogg',
-        'kick_stone.ogg',       'kick_basic.wav',   'kick_basic.wav',   'kick_stone.ogg',       'wood01.ogg',       'wood02.ogg',           'wood03.ogg',           'wood04.ogg'
+        'hhat_basic.wav',       'hhat_707.ogg',     'hhat_9091.ogg',    'hhat_9092.ogg',        'hhat_attack6.ogg',     'hhat_scissors1.ogg',   'hhat_scissors2.ogg',   'hhat_scissors3.ogg',
+        'snare_basic.wav',      'clap.wav',         'clap.wav',         'snare_spray.ogg',      'hhat_light1.ogg',      'hhat_light2.ogg',      'hhat_light3.ogg',      'hhat_light4.ogg',
+        'kick_attack35.ogg',    'kick_dnc3.ogg',    'kick_dnc3.ogg',    'kick_downstream12.ogg','bottle_01.ogg',        'bottle_02.ogg',        'bottle_03.ogg',        'glass_knock1.ogg',
+        'kick_stone.ogg',       'kick_basic.wav',   'kick_basic.wav',   'kick_stone.ogg',       'wood01.ogg',           'wood02.ogg',           'wood03.ogg',           'wood04.ogg'
     ]
     ,
     [ //Kontakt
-        'rim_stick.ogg',        'stick.ogg',        'rim_pluck.ogg',    'rim_stick.ogg',        'jump_01.ogg',      'jump_02.ogg',          'kick_punch.ogg',       'kick_punch.ogg',
-        'tom_01.ogg',           'tom_02.ogg',       'tom_03.ogg',       'hhat_tamb.ogg',        'tuba_01.ogg',      'tuba_02.ogg',          'tuba_03.ogg',          'kick_punch.ogg',
-        'kick_reso_01.ogg',     'snare.ogg',        'snare.ogg',        'kick_reso_02.ogg',     'kick_punch.ogg',   'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg',
-        'kick_piano_01.ogg',    'kick_punch.ogg',   'kick_punch.ogg',   'kick_piano_02.ogg',    'kick_punch.ogg',   'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg'
-    ] //refer to GLOBAL_pageName
+        'rim_stick.ogg',        'stick.ogg',        'rim_pluck.ogg',    'rim_stick.ogg',        'jump_01.ogg',          'jump_02.ogg',          'kick_punch.ogg',       'kick_punch.ogg',
+        'tom_01.ogg',           'tom_02.ogg',       'tom_03.ogg',       'hhat_tamb.ogg',        'tuba_01.ogg',          'tuba_02.ogg',          'tuba_03.ogg',          'kick_punch.ogg',
+        'kick_reso_01.ogg',     'snare.ogg',        'snare.ogg',        'kick_reso_02.ogg',     'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg',
+        'kick_piano_01.ogg',    'kick_punch.ogg',   'kick_punch.ogg',   'kick_piano_02.ogg',    'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg',       'kick_punch.ogg'
+    ]
+    ,
+    [ //Estairlevakastor
+        'hhat-01.ogg',          'reso-01.ogg',      'reso-02.ogg',      'hhat-02.ogg',          'ting-special-01.ogg',  'ting-special-02.ogg',  'ting-special-03.ogg',  'kick-01.ogg',
+        'clap-01.ogg',          'clap-02.ogg',      'clap-03.ogg',      'clap-04.ogg',          'ting-soft-01.ogg',     'ting-soft-02.ogg',     'ting-soft-03.ogg',     'ting-smack-05.ogg',
+        'snare-01.ogg',         'snare-02.ogg',     'snare-03.ogg',     'snare-04.ogg',         'ting-smack-01.ogg',    'ting-smack-02.ogg',    'ting-smack-03.ogg',    'ting-smack-04.ogg',
+        'kick-01.ogg',          'kick-02.ogg',      'kick-03.ogg',      'kick-04.ogg',          'ting-strong-01.ogg',   'ting-strong-02.ogg',   'ting-strong-03.ogg',   'ting-strong-04.ogg'
+    ]
+    //refer to GLOBAL_pageName
 ]
 
 var List_AudioBuffers = []; //will be a 2D array
@@ -486,8 +494,9 @@ function POwO_visual_config_MainColor()
 document.addEventListener('keydown', (event) => {
     switch (event.key)
     {
-        case "9" : GLOBAL_pageIndex = 0 ; field_met_page.innerText = GLOBAL_pageIndex ; break ;
-        case "o" : GLOBAL_pageIndex = 1 ; field_met_page.innerText = GLOBAL_pageIndex ; break ;
+        case "9" : GLOBAL_pageIndex = 0 ; field_met_page.innerText = " 0 - FL Basic" ; break ;
+        case "o" : GLOBAL_pageIndex = 1 ; field_met_page.innerText = " 1 - Kontakt Package" ; break ;
+        case "l" : GLOBAL_pageIndex = 2 ; field_met_page.innerText = " 2 - Estairlevakastor" ; break ;
         default : POwO_KeyDown_PlaySound(event.key) ; break ;
     }
 });
